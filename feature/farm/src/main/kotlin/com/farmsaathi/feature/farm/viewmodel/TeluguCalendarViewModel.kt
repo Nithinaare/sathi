@@ -292,7 +292,9 @@ class TeluguCalendarViewModel @Inject constructor(
             audioEngine.stop()
             return
         }
-        val speech = "${karte.teluguName} కార్తె. కాలం: ${karte.approxDateSpan}. సామెత: ${karte.proverb}. వ్యవసాయ సలహా: ${karte.agriculturalSignificance}. అనుకూల పంటలు: ${karte.recommendedCrops.joinToString(", ")}."
+        val speech = "${karte.teluguName} కార్తె. కాలం: ${karte.approxDateSpan}. " +
+            "సామెత: ${karte.proverb}. వ్యవసాయ సలహా: ${karte.agriculturalSignificance}. " +
+            "అనుకూల పంటలు: ${karte.recommendedCrops.joinToString(", ")}."
         audioEngine.speakDynamicText(speech, useTelugu = true)
     }
 
@@ -320,9 +322,11 @@ class TeluguCalendarViewModel @Inject constructor(
 
             if (day.isAmavasya) {
                 if (day.festivalName != null) {
-                    sb.append("నేడు ${day.festivalName}. నేడు అమావాస్య. ఎడ్లకు విశ్రాంతి ఇవ్వండి. చీకటి రాత్రి పురుగులు గుడ్లు పెట్టకుండా పొలంలో దీపపు బుట్టలు అమర్చండి. ")
+                    sb.append("నేడు ${day.festivalName}. నేడు అమావాస్య. ఎడ్లకు విశ్రాంతి ఇవ్వండి. ")
+                    sb.append("చీకటి రాత్రి పురుగులు గుడ్లు పెట్టకుండా పొలంలో దీపపు బుట్టలు అమర్చండి. ")
                 } else {
-                    sb.append("నేడు అమావాస్య. ఎడ్లకు విశ్రాంతి ఇవ్వండి. చీకటి రాత్రి పురుగులు గుడ్లు పెట్టకుండా పొలంలో దీపపు బుట్టలు అమర్చండి. ")
+                    sb.append("నేడు అమావాస్య. ఎడ్లకు విశ్రాంతి ఇవ్వండి. ")
+                    sb.append("చీకటి రాత్రి పురుగులు గుడ్లు పెట్టకుండా పొలంలో దీపపు బుట్టలు అమర్చండి. ")
                 }
             } else if (day.isPournami) {
                 if (day.festivalName != null) {

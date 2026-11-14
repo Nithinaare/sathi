@@ -466,7 +466,11 @@ private fun GpsCaptureContent(
         isLoading = state.isCalculating,
     )
     NoticeCard(
-        text = if (useTelugu) "GPS కొలత జరుగుతున్నప్పుడు ఈ తెర తెరిచి ఉంచండి. ఫోన్ లాక్ చేస్తే కొలత ఆగుతుంది." else "Keep this screen open during the walk. The measurement pauses when the app goes to the background or the phone is locked.",
+        text = if (useTelugu) {
+            "GPS కొలత జరుగుతున్నప్పుడు ఈ తెర తెరిచి ఉంచండి. ఫోన్ లాక్ చేస్తే కొలత ఆగుతుంది."
+        } else {
+            "Keep this screen open during the walk. The measurement pauses when the app goes to the background or the phone is locked."
+        },
     )
 }
 
@@ -498,7 +502,11 @@ private fun ManualMeasurementContent(
         modifier = Modifier.fillMaxWidth(),
     )
     NoticeCard(
-        text = if (useTelugu) "ఈ పద్ధతి నాలుగు వైపులా సుమారుగా సమకోణాలున్న మడికి మాత్రమే. వంకర ఆకారానికి GPS పద్ధతి ఎంచుకోండి." else "Use this only for an approximately rectangular plot. Use GPS for irregular boundaries.",
+        text = if (useTelugu) {
+            "ఈ పద్ధతి నాలుగు వైపులా సుమారుగా సమకోణాలున్న మడికి మాత్రమే. వంకర ఆకారానికి GPS పద్ధతి ఎంచుకోండి."
+        } else {
+            "Use this only for an approximately rectangular plot. Use GPS for irregular boundaries."
+        },
     )
     FarmPrimaryButton(
         text = if (useTelugu) "విస్తీర్ణం లెక్కించండి" else "Calculate area",
@@ -537,7 +545,12 @@ private fun MeasurementReviewContent(
                 )
             }
         }
-        DetailLine(if (useTelugu) "కొలిచిన పద్ధతి" else "Method", if (state.method == LandMeasurementMethod.GPS_BOUNDARY) if (useTelugu) "GPS తో నడిచి" else "GPS boundary walk" else if (useTelugu) "పొడవు × వెడల్పు" else "Manual rectangle")
+        val methodDesc = if (state.method == LandMeasurementMethod.GPS_BOUNDARY) {
+            if (useTelugu) "GPS తో నడిచి" else "GPS boundary walk"
+        } else {
+            if (useTelugu) "పొడవు × వెడల్పు" else "Manual rectangle"
+        }
+        DetailLine(if (useTelugu) "కొలిచిన పద్ధతి" else "Method", methodDesc)
         DetailLine(if (useTelugu) "చుట్టుకొలత" else "Perimeter", "${formatNumber(result.perimeterMeters)} m")
         if (state.method == LandMeasurementMethod.GPS_BOUNDARY) {
             DetailLine(if (useTelugu) "నమోదైన మూలలు" else "Boundary points", result.pointCount.toString())
@@ -557,7 +570,13 @@ private fun MeasurementReviewContent(
             }
             BoundaryPreview(state.acceptedPoints, useTelugu, closeBoundary = true)
         }
-        NoticeCard(text = if (useTelugu) "ఇది ఫోన్‌తో వచ్చిన అంచనా మాత్రమే. మీ పాత మడి విస్తీర్ణం చరిత్రలో అలాగే ఉంటుంది." else "This is a phone-based estimate. The previous saved plot area remains in measurement history.")
+        NoticeCard(
+            text = if (useTelugu) {
+                "ఇది ఫోన్‌తో వచ్చిన అంచనా మాత్రమే. మీ పాత మడి విస్తీర్ణం చరిత్రలో అలాగే ఉంటుంది."
+            } else {
+                "This is a phone-based estimate. The previous saved plot area remains in measurement history."
+            },
+        )
         FarmPrimaryButton(
             text = if (useTelugu) "కొలత మాత్రమే దాచండి" else "Save measurement only",
             onClick = onSaveOnly,

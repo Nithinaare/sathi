@@ -177,7 +177,10 @@ abstract class FarmSaathiDatabase : RoomDatabase() {
                     )
                     db.execSQL("CREATE INDEX IF NOT EXISTS `index_land_measurements_farmId` ON `land_measurements` (`farmId`)")
                     db.execSQL("CREATE INDEX IF NOT EXISTS `index_land_measurements_plotId` ON `land_measurements` (`plotId`)")
-                    db.execSQL("CREATE INDEX IF NOT EXISTS `index_land_measurements_completedAtEpochMillis` ON `land_measurements` (`completedAtEpochMillis`)")
+                    db.execSQL(
+                        "CREATE INDEX IF NOT EXISTS `index_land_measurements_completedAtEpochMillis` " +
+                            "ON `land_measurements` (`completedAtEpochMillis`)",
+                    )
                     db.execSQL(
                         """
                         CREATE TABLE IF NOT EXISTS `land_boundary_points` (
@@ -192,7 +195,11 @@ abstract class FarmSaathiDatabase : RoomDatabase() {
                         )
                         """.trimIndent(),
                     )
-                    db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_land_boundary_points_measurementId_sequenceNumber` ON `land_boundary_points` (`measurementId`, `sequenceNumber`)")
+                    db.execSQL(
+                        "CREATE UNIQUE INDEX IF NOT EXISTS " +
+                            "`index_land_boundary_points_measurementId_sequenceNumber` " +
+                            "ON `land_boundary_points` (`measurementId`, `sequenceNumber`)",
+                    )
                 }
             }
 

@@ -363,7 +363,6 @@ fun FarmVisualGridTile(
                     imageRes = checkNotNull(imageRes),
                     title = title,
                     enabled = enabled,
-                    accentColor = borderColor,
                 )
             } else {
                 Column(
@@ -451,7 +450,6 @@ private fun FullBleedTileContent(
     @DrawableRes imageRes: Int,
     title: String,
     enabled: Boolean,
-    accentColor: Color = FarmColors.PrimaryForest,
 ) {
     Box(
         modifier =
@@ -471,23 +469,14 @@ private fun FullBleedTileContent(
                 .matchParentSize()
                 .background(FullBleedTileScrimBrush),
         )
-        Row(
+        Box(
             modifier =
             Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(horizontal = FarmSpacing.dp12, vertical = FarmSpacing.dp12),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+            contentAlignment = Alignment.Center,
         ) {
-            Box(
-                modifier =
-                Modifier
-                    .size(8.dp)
-                    .clip(FarmShapeTokens.circular)
-                    .background(accentColor),
-            )
-            Spacer(Modifier.width(FarmSpacing.dp8))
             Text(
                 text = title,
                 style = FarmTypography.titleMedium.copy(fontWeight = FontWeight.Bold),
@@ -495,7 +484,6 @@ private fun FullBleedTileContent(
                 textAlign = TextAlign.Center,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f, fill = false),
             )
         }
     }

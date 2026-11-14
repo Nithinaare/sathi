@@ -1,20 +1,17 @@
 package com.farmsaathi.feature.home
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ApplicationProvider
 import com.farmsaathi.core.audio.VoiceNoteManager
 import com.farmsaathi.core.common.AcousticCue
+import com.farmsaathi.core.common.AppDispatchers
 import com.farmsaathi.core.common.AudioCueCatalog
 import com.farmsaathi.core.common.AudioGuidanceEngine
+import com.farmsaathi.core.common.DefaultAppDispatchers
 import com.farmsaathi.core.common.TimeProvider
 import com.farmsaathi.core.common.repository.ContactAndSearchRepository
 import com.farmsaathi.core.common.repository.DataOverviewCounts
@@ -56,25 +53,21 @@ import com.farmsaathi.core.model.Plot
 import com.farmsaathi.core.model.TaskStatus
 import com.farmsaathi.core.model.TeluguCalendarDay
 import com.farmsaathi.core.model.TeluguKarte
-import com.farmsaathi.core.model.TeluguKarteluCatalog
 import com.farmsaathi.core.model.TeluguMonth
 import com.farmsaathi.core.model.TeluguTithi
 import com.farmsaathi.feature.home.components.HomePanchangKarteBanner
-import com.farmsaathi.feature.home.screens.HomeDashboardScreen
 import com.farmsaathi.feature.home.viewmodel.HomeUiState
 import com.farmsaathi.feature.home.viewmodel.HomeViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.farmsaathi.core.common.AppDispatchers
-import com.farmsaathi.core.common.DefaultAppDispatchers
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -465,8 +458,8 @@ class HomeAudioAndRecompositionChallengerTest {
     }
 
     private class ControllableAudioEngine : AudioGuidanceEngine {
-        val _isSpeaking = MutableStateFlow(false)
-        override val isSpeaking: StateFlow<Boolean> = _isSpeaking.asStateFlow()
+        val isSpeakingFlow = MutableStateFlow(false)
+        override val isSpeaking: StateFlow<Boolean> = isSpeakingFlow.asStateFlow()
         override val activeCueKey: StateFlow<String?> = MutableStateFlow(null)
 
         var stopCalls = 0
@@ -476,22 +469,22 @@ class HomeAudioAndRecompositionChallengerTest {
 
         override fun speakCue(cueKey: String, useTelugu: Boolean) {
             lastSpokenCue = cueKey
-            _isSpeaking.value = true
+            isSpeakingFlow.value = true
         }
 
         override fun speakDynamicText(text: String, useTelugu: Boolean) {
             speakDynamicCalls++
             lastSpokenText = text
-            _isSpeaking.value = true
+            isSpeakingFlow.value = true
         }
 
         override fun stop() {
             stopCalls++
-            _isSpeaking.value = false
+            isSpeakingFlow.value = false
         }
 
         fun simulateTtsCompletion() {
-            _isSpeaking.value = false
+            isSpeakingFlow.value = false
         }
 
         override fun playAcousticFeedback(cue: AcousticCue) {}
@@ -507,12 +500,16 @@ class HomeAudioAndRecompositionChallengerTest {
         private var alert: LunarDayAlert? = null,
     ) : TeluguCalendarRepository {
         private val dayFlow = MutableStateFlow(day)
-        private val karteFlow = MutableStateFlow(karte ?: CurrentKarteInfo(
-            1, "అశ్విని", "Ashwini", 1, 14, 13, 7.1f, "అశ్విని సామెత", "అదను", listOf("పత్తి")
-        ))
-        private val alertFlow = MutableStateFlow(alert ?: LunarDayAlert(
-            LunarAlertType.DAY_STANDARD, "సహజ రోజు", "పనులు కొనసాగించండి", "", null, null, false
-        ))
+        private val karteFlow = MutableStateFlow(
+            karte ?: CurrentKarteInfo(
+                1, "అశ్విని", "Ashwini", 1, 14, 13, 7.1f, "అశ్విని సామెత", "అదను", listOf("పత్తి"),
+            ),
+        )
+        private val alertFlow = MutableStateFlow(
+            alert ?: LunarDayAlert(
+                LunarAlertType.DAY_STANDARD, "సహజ రోజు", "పనులు కొనసాగించండి", "", null, null, false,
+            ),
+        )
 
         fun updateAlert(newAlert: LunarDayAlert) {
             alert = newAlert
@@ -561,8 +558,15 @@ class HomeAudioAndRecompositionChallengerTest {
         override suspend fun ensureStarterTemplatesSeeded() {}
         override fun observeCropCycles(plotId: Long?, farmId: Long?): Flow<List<CropCycle>> = flowOf(emptyList())
         override fun observeCropCycle(cropCycleId: Long): Flow<CropCycle?> = flowOf(null)
-        override suspend fun createCropCycleWithTemplate(cycle: CropCycle, generateTasksFromTemplate: Boolean, useTeluguTitles: Boolean): AppResult<Long> = AppResult.Success(1L)
-        override suspend fun updateCropCycle(cycle: CropCycle, recalculateUncompletedTemplateTasks: Boolean): AppResult<Unit> = AppResult.Success(Unit)
+        override suspend fun createCropCycleWithTemplate(
+            cycle: CropCycle,
+            generateTasksFromTemplate: Boolean,
+            useTeluguTitles: Boolean,
+        ): AppResult<Long> = AppResult.Success(1L)
+        override suspend fun updateCropCycle(
+            cycle: CropCycle,
+            recalculateUncompletedTemplateTasks: Boolean,
+        ): AppResult<Unit> = AppResult.Success(Unit)
         override suspend fun updateCropCycleStatus(cropCycleId: Long, status: CropCycleStatus): AppResult<Unit> = AppResult.Success(Unit)
         override fun observeTasks(cropCycleId: Long?, plotId: Long?, farmId: Long?): Flow<List<CropTask>> = flowOf(emptyList())
         override fun observeDueAndOverdueTasks(todayEpochDay: Long): Flow<List<CropTask>> = flowOf(emptyList())
@@ -573,17 +577,36 @@ class HomeAudioAndRecompositionChallengerTest {
     }
 
     private class StubFinanceRepo : FinanceRepository {
-        override fun observeLedgerEntries(farmId: Long?, cropCycleId: Long?, entryType: LedgerEntryType?, query: String): Flow<List<LedgerEntry>> = flowOf(emptyList())
+        override fun observeLedgerEntries(
+            farmId: Long?,
+            cropCycleId: Long?,
+            entryType: LedgerEntryType?,
+            query: String,
+        ): Flow<List<LedgerEntry>> = flowOf(emptyList())
         override fun observeSeasonTotals(farmId: Long?): Flow<SeasonFinancialTotals> =
             flowOf(SeasonFinancialTotals(MoneyPaise.fromRupees(5000), MoneyPaise.fromRupees(12_000), MoneyPaise.ZERO, MoneyPaise.ZERO))
         override fun observeLedgerEntry(ledgerEntryId: Long): Flow<LedgerEntry?> = flowOf(null)
         override suspend fun getExpenseDetail(expenseId: Long): ExpenseDetail? = null
         override suspend fun saveManualExpense(detail: ExpenseDetail, paidAmount: MoneyPaise) = AppResult.Success(1L)
-        override suspend fun saveManualIncome(farmId: Long, plotId: Long?, cropCycleId: Long?, title: String, amount: MoneyPaise, settledAmount: MoneyPaise, paymentMode: PaymentMode, dateEpochMillis: Long, notes: String?) = AppResult.Success(1L)
+        override suspend fun saveManualIncome(
+            farmId: Long,
+            plotId: Long?,
+            cropCycleId: Long?,
+            title: String,
+            amount: MoneyPaise,
+            settledAmount: MoneyPaise,
+            paymentMode: PaymentMode,
+            dateEpochMillis: Long,
+            notes: String?,
+        ) = AppResult.Success(1L)
         override fun observeCropSales(cropCycleId: Long?): Flow<List<CropSale>> = flowOf(emptyList())
         override fun observeCropSale(saleId: Long): Flow<CropSale?> = flowOf(null)
         override suspend fun saveCropSale(sale: CropSale) = AppResult.Success(1L)
-        override suspend fun recordLedgerSettlement(ledgerEntryId: Long, additionalPaidOrReceived: MoneyPaise, paymentMode: PaymentMode) = AppResult.Success(Unit)
+        override suspend fun recordLedgerSettlement(
+            ledgerEntryId: Long,
+            additionalPaidOrReceived: MoneyPaise,
+            paymentMode: PaymentMode,
+        ) = AppResult.Success(Unit)
         override suspend fun voidLedgerEntry(ledgerEntryId: Long, reason: String) = AppResult.Success(Unit)
         override fun observeCropProfitabilitySummaries(farmId: Long?): Flow<List<CropProfitabilitySummary>> = flowOf(emptyList())
     }
@@ -593,7 +616,15 @@ class HomeAudioAndRecompositionChallengerTest {
         override fun observeSessions(cropCycleId: Long?): Flow<List<MachinerySession>> = flowOf(emptyList())
         override fun observeSession(sessionId: Long): Flow<MachinerySession?> = flowOf(null)
         override suspend fun startLiveSession(request: StartMachinerySessionRequest) = AppResult.Success(1L)
-        override suspend fun stopLiveSession(sessionId: Long, overrideElapsedMinutes: Long?, areaCoveredMicroAcres: Long?, flatAmount: MoneyPaise?, paidAmount: MoneyPaise, paymentMode: PaymentMode, notes: String?): AppResult<MachinerySession> = error("unused")
+        override suspend fun stopLiveSession(
+            sessionId: Long,
+            overrideElapsedMinutes: Long?,
+            areaCoveredMicroAcres: Long?,
+            flatAmount: MoneyPaise?,
+            paidAmount: MoneyPaise,
+            paymentMode: PaymentMode,
+            notes: String?,
+        ): AppResult<MachinerySession> = error("unused")
         override suspend fun cancelLiveSession(sessionId: Long) = AppResult.Success(Unit)
         override suspend fun saveManualSession(session: MachinerySession, paymentMode: PaymentMode) = AppResult.Success(1L)
     }

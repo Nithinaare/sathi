@@ -427,12 +427,21 @@ constructor(
 
         fun calculationErrorText(error: AreaCalculationError): Pair<String, String> =
             when (error) {
-                AreaCalculationError.TOO_FEW_POINTS -> "కనీసం 3 వేర్వేరు మూలలు నమోదు చేయండి." to "Walk the boundary and capture at least three distinct points."
-                AreaCalculationError.INVALID_COORDINATE -> "GPS స్థానం సరిగా లేదు. మళ్లీ ప్రయత్నించండి." to "One or more GPS coordinates are invalid."
-                AreaCalculationError.SELF_INTERSECTING_BOUNDARY -> "నడిచిన హద్దు ఒకదానిని మరొకటి దాటుతోంది. పాయింట్లు సరిచేయండి." to "The captured boundary crosses itself. Review the points."
-                AreaCalculationError.BOUNDARY_NOT_CLOSED -> "ప్రారంభించిన చోటుకు దగ్గరగా తిరిగి రండి. చివరి స్థానం చాలా దూరంలో ఉంది." to "Return closer to the starting point before finishing the boundary walk."
-                AreaCalculationError.ZERO_OR_INVALID_AREA -> "విస్తీర్ణం లెక్కించలేకపోయాం." to "The boundary does not produce a valid area."
-                AreaCalculationError.TOO_MANY_POINTS -> "చాలా ఎక్కువ స్థానాలు నమోదయ్యాయి. మళ్లీ కొలవండి." to "Too many boundary points were recorded. Please measure again."
+                AreaCalculationError.TOO_FEW_POINTS ->
+                    "కనీసం 3 వేర్వేరు మూలలు నమోదు చేయండి." to "Walk the boundary and capture at least three distinct points."
+                AreaCalculationError.INVALID_COORDINATE ->
+                    "GPS స్థానం సరిగా లేదు. మళ్లీ ప్రయత్నించండి." to "One or more GPS coordinates are invalid."
+                AreaCalculationError.SELF_INTERSECTING_BOUNDARY ->
+                    "నడిచిన హద్దు ఒకదానిని మరొకటి దాటుతోంది. పాయింట్లు సరిచేయండి." to
+                        "The captured boundary crosses itself. Review the points."
+                AreaCalculationError.BOUNDARY_NOT_CLOSED ->
+                    "ప్రారంభించిన చోటుకు దగ్గరగా తిరిగి రండి. చివరి స్థానం చాలా దూరంలో ఉంది." to
+                        "Return closer to the starting point before finishing the boundary walk."
+                AreaCalculationError.ZERO_OR_INVALID_AREA ->
+                    "విస్తీర్ణం లెక్కించలేకపోయాం." to "The boundary does not produce a valid area."
+                AreaCalculationError.TOO_MANY_POINTS ->
+                    "చాలా ఎక్కువ స్థానాలు నమోదయ్యాయి. మళ్లీ కొలవండి." to
+                        "Too many boundary points were recorded. Please measure again."
             }
 
         fun rejectionTextTe(reason: GpsFixRejection): String =

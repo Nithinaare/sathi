@@ -776,7 +776,11 @@ fun PlotDetailScreen(
                     text = if (useTe) "మడి విస్తీర్ణం కొలవండి" else "Measure plot area",
                     leadingIcon = Icons.Rounded.Terrain,
                     onClick = { onMeasurePlot(plot.id) },
-                    speakDescription = if (useTe) "ఈ మడి ఎంత ఉందో GPS తో నడిచి లేదా పొడవు వెడల్పు రాసి కొలవండి." else "Measure this plot by walking its boundary or entering its dimensions.",
+                    speakDescription = if (useTe) {
+                        "ఈ మడి ఎంత ఉందో GPS తో నడిచి లేదా పొడవు వెడల్పు రాసి కొలవండి."
+                    } else {
+                        "Measure this plot by walking its boundary or entering its dimensions."
+                    },
                 )
             }
             item(key = "plot_crops_header", contentType = "section_header") {

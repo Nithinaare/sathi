@@ -358,8 +358,8 @@ object TeluguKarteluCatalog {
 @Serializable
 data class TeluguCalendarDay(
     val epochDay: Long,
-    val gregorianDate: String, // "YYYY-MM-DD"
-    val teluguYear: String, // "క్రోధి", "విశ్వావసు", etc.
+    val gregorianDate: String,
+    val teluguYear: String,
     val teluguMonth: TeluguMonth,
     val paksham: Paksham,
     val tithi: TeluguTithi,
