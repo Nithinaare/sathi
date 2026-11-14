@@ -96,6 +96,7 @@ private fun NavGraphBuilder.homeAndMoreDestinations(nav: NavController) {
             onOpenIrrigation = { nav.navigate(FarmRoute.IrrigationList()) },
             onOpenExtras = { nav.navigate(FarmRoute.MoreTab) },
             onOpenTeluguCalendar = { nav.navigate(FarmRoute.TeluguCalendar()) },
+            onOpenLandMeasurement = { nav.navigate(FarmRoute.LandMeasurement()) },
             onSnapPhotoReady = { path, exifTs ->
                 nav.navigate(FarmRoute.SnapToLog(photoPath = path, exifEpochMillis = exifTs))
             },
@@ -108,6 +109,7 @@ private fun NavGraphBuilder.homeAndMoreDestinations(nav: NavController) {
             onOpenReports = { nav.navigate(FarmRoute.ReportsOverview) },
             onOpenHelp = { nav.navigate(FarmRoute.OfflineHelp) },
             onOpenBackup = { nav.navigate(FarmRoute.BackupRestore) },
+            onOpenLandMeasurement = { nav.navigate(FarmRoute.LandMeasurement()) },
             onBack = { nav.popBackStack() },
         )
     }

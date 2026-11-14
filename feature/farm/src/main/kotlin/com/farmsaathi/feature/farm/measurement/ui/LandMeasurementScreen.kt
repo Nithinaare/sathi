@@ -86,7 +86,7 @@ import kotlin.math.max
 
 @Composable
 fun LandMeasurementScreen(
-    plotId: Long,
+    plotId: Long?,
     onBack: () -> Unit,
     viewModel: LandMeasurementViewModel = hiltViewModel(),
 ) {
@@ -114,7 +114,11 @@ fun LandMeasurementScreen(
         showDiscardCaptureConfirmation = true
     }
 
-    LaunchedEffect(plotId) { viewModel.loadPlot(plotId) }
+    LaunchedEffect(plotId) {
+        if (plotId != null && plotId > 0L) {
+            viewModel.loadPlot(plotId)
+        }
+    }
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),

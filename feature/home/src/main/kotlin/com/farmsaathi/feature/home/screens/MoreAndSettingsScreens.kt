@@ -31,6 +31,7 @@ import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.Terrain
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -90,6 +91,7 @@ fun MoreHubScreen(
     onOpenSearch: () -> Unit = {},
     onOpenSettings: () -> Unit = {},
     onOpenTemplates: () -> Unit = {},
+    onOpenLandMeasurement: () -> Unit = {},
     onBack: (() -> Unit)? = null,
 ) {
     val useTe = LocalAppLanguage.current == AppLanguage.TELUGU
@@ -158,6 +160,16 @@ fun MoreHubScreen(
                             modifier = Modifier.weight(1f).fillMaxHeight(),
                         )
                     },
+                )
+            }
+            item(key = "extras_row_measurement", contentType = "action_tile") {
+                FarmVisualGridTile(
+                    title = if (useTe) "భూమి కొలత" else "Land Measurement",
+                    icon = Icons.Rounded.Terrain,
+                    borderColor = FarmColors.PrimaryForest,
+                    speakDescription = if (useTe) "GPS తో నడిచి లేదా పొడవు వెడల్పు రాసి మడి విస్తీర్ణం కొలవండి." else "Measure plot area by walking with GPS or entering dimensions.",
+                    onClick = onOpenLandMeasurement,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }

@@ -42,6 +42,7 @@ import androidx.compose.material.icons.rounded.PhotoLibrary
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Stop
+import androidx.compose.material.icons.rounded.Terrain
 import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.material.icons.rounded.WaterDrop
 import androidx.compose.material3.HorizontalDivider
@@ -118,6 +119,7 @@ fun HomeDashboardScreen(
     onOpenBackup: () -> Unit = onOpenSettings,
     onSnapPhotoReady: (String, Long?) -> Unit = { _, _ -> },
     onOpenTeluguCalendar: () -> Unit = {},
+    onOpenLandMeasurement: () -> Unit = {},
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lang = state.prefs.language
@@ -418,21 +420,35 @@ fun HomeDashboardScreen(
                 }
             }
 
-            item(key = "extras_tile", contentType = "action_tile") {
-                FarmVisualGridTile(
-                    title = farmString(R.string.home_extras_tile),
-                    icon = Icons.Rounded.Extension,
-                    imageRes = FarmImages.extrasShed,
-                    fullBleedImage = true,
-                    borderColor = FarmColors.SecondaryText,
-                    speakDescription =
-                    if (useTe) {
-                        "అదనపు సౌకర్యాలు. డైరీ, మందుల నిల్వ, కోత, మట్టి పరీక్షలు మరియు నివేదికలు ఇక్కడ ఉంటాయి."
-                    } else {
-                        "Advanced Extras. Open field diary, input stock, harvest, soil health, and reports."
+            item(key = "action_row_extras_measurement", contentType = "two_col_action_row") {
+                TwoColActionRow(
+                    first = {
+                        FarmVisualGridTile(
+                            title = farmString(R.string.home_tile_land_measurement),
+                            icon = Icons.Rounded.Terrain,
+                            borderColor = FarmColors.PrimaryForest,
+                            speakDescription = farmString(R.string.home_tile_land_measurement_desc),
+                            onClick = onOpenLandMeasurement,
+                            modifier = Modifier.weight(1f).fillMaxHeight(),
+                        )
                     },
-                    onClick = onOpenExtras,
-                    modifier = Modifier.fillMaxWidth(),
+                    second = {
+                        FarmVisualGridTile(
+                            title = farmString(R.string.home_extras_tile),
+                            icon = Icons.Rounded.Extension,
+                            imageRes = FarmImages.extrasShed,
+                            fullBleedImage = true,
+                            borderColor = FarmColors.SecondaryText,
+                            speakDescription =
+                            if (useTe) {
+                                "అదనపు సౌకర్యాలు. డైరీ, మందుల నిల్వ, కోత, మట్టి పరీక్షలు మరియు నివేదికలు ఇక్కడ ఉంటాయి."
+                            } else {
+                                "Advanced Extras. Open field diary, input stock, harvest, soil health, and reports."
+                            },
+                            onClick = onOpenExtras,
+                            modifier = Modifier.weight(1f).fillMaxHeight(),
+                        )
+                    },
                 )
             }
         }

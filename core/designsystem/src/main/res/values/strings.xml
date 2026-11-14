@@ -175,4 +175,6 @@
     <string name="cal_advisory_label">సాగు సూచన (అదను)</string>
     <string name="home_panchang_listen">వినండి</string>
     <string name="home_panchang_view_calendar">పంచాంగం చూడండి</string>
+    <string name="home_tile_land_measurement">భూమి కొలత</string>
+    <string name="home_tile_land_measurement_desc">GPS తో నడిచి లేదా పొడవు వెడల్పు రాసి మడి విస్తీర్ణం కొలవండి.</string>
 </resources>

@@ -27,7 +27,7 @@ sealed interface FarmRoute {
 
     @Serializable data class PlotDetail(val plotId: Long) : FarmRoute
 
-    @Serializable data class LandMeasurement(val plotId: Long) : FarmRoute
+    @Serializable data class LandMeasurement(val plotId: Long? = null) : FarmRoute
 
     @Serializable data class PlotForm(val farmId: Long, val plotId: Long? = null) : FarmRoute
 

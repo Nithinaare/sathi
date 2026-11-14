@@ -175,4 +175,6 @@
     <string name="cal_advisory_label">Agricultural Advisory (Adanu)</string>
     <string name="home_panchang_listen">Listen</string>
     <string name="home_panchang_view_calendar">View Panchang</string>
+    <string name="home_tile_land_measurement">Land Measurement</string>
+    <string name="home_tile_land_measurement_desc">Measure plot area by walking with GPS or entering dimensions.</string>
 </resources>
