@@ -1,0 +1,45 @@
+build:
+  maxIssues: 0
+
+complexity:
+  CyclomaticComplexMethod:
+    threshold: 16
+    ignoreSingleWhenExpression: true
+    ignoreAnnotated: ['Composable']
+  LongMethod:
+    threshold: 95
+    ignoreAnnotated: ['Composable']
+  LongParameterList:
+    functionThreshold: 15
+    constructorThreshold: 12
+    ignoreDefaultParameters: true
+    ignoreAnnotated: ['Composable']
+  TooManyFunctions:
+    thresholdInFiles: 40
+    thresholdInClasses: 30
+    thresholdInInterfaces: 30
+    thresholdInObjects: 30
+  ComplexCondition:
+    threshold: 5
+
+empty-blocks:
+  EmptyFunctionBlock:
+    ignoreOverridden: true
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+  MatchingDeclarationName:
+    active: false
+
+style:
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    maxLineLength: 150
+    excludeCommentStatements: true
+    excludeRawStrings: true
+  ReturnCount:
+    max: 4
+  UnusedPrivateMember:
+    ignoreAnnotated: ['Preview']

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App & Navigation -->
+    <string name="app_name">Farm Saathi</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_farms">Crops</string>
+    <string name="nav_accounts">Money</string>
+    <string name="nav_more">Extras</string>
+
+    <!-- Common Actions & States -->
+    <string name="common_save">Save</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_archive">Archive</string>
+    <string name="common_confirm">Yes, confirm</string>
+    <string name="common_back">Back</string>
+    <string name="common_listen">Listen</string>
+    <string name="common_stop_audio">Stop</string>
+    <string name="common_today">Today</string>
+    <string name="common_yesterday">Yesterday</string>
+    <string name="common_all">All</string>
+    <string name="common_see_all">See all</string>
+    <string name="common_search">Search</string>
+    <string name="common_clear_search">Clear search</string>
+    <string name="common_retry">Try again</string>
+    <string name="common_loading">Loading details...</string>
+    <string name="common_offline_badge">Saved on phone (No internet needed)</string>
+    <string name="common_saved_toast">Saved safely on phone</string>
+    <string name="common_required_field">Please enter this detail</string>
+    <string name="common_invalid_number">Please enter a valid number</string>
+    <string name="common_notes_optional">Short note (optional)</string>
+    <string name="common_ok">OK</string>
+    <string name="time_morning_slot">Morning 07:00</string>
+    <string name="time_afternoon_slot">Afternoon 01:00</string>
+    <string name="time_evening_slot">Evening 05:30</string>
+    <string name="time_minus_30m">−30 min</string>
+    <string name="time_plus_30m">+30 min</string>
+
+    <!-- Permissions -->
+    <string name="perm_camera_title">Camera permission needed</string>
+    <string name="perm_camera_msg">Allow camera access to save farm and bill photos offline on your phone.</string>
+    <string name="perm_mic_title">Microphone permission needed</string>
+    <string name="perm_mic_msg">Allow microphone access to record offline voice notes in your diary.</string>
+    <string name="perm_grant">Allow</string>
+    <string name="perm_deny">Not now</string>
+
+    <!-- Onboarding -->
+    <string name="onb_title">Welcome to Farm Saathi</string>
+    <string name="onb_subtitle">Easily track your farm expenses, crops, and sales right on your phone.</string>
+    <string name="onb_lang_label">Choose your language</string>
+    <string name="onb_get_started">Get Started</string>
+    <string name="onb_audio_mic_title">Audio &amp; Mic Test</string>
+    <string name="onb_audio_test_btn">Test Spoken Audio</string>
+    <string name="onb_mic_test_hint">Record a quick sample to verify your phone microphone works (optional).</string>
+    <string name="onb_continue">Continue</string>
+    <string name="onb_profile_title">Your Profile &amp; First Farm</string>
+    <string name="onb_name_label">Your name</string>
+    <string name="onb_name_hint">e.g., Ramulu / Venkateswarlu</string>
+    <string name="onb_village_label">Village name (optional)</string>
+    <string name="onb_village_hint">e.g., Narsapur</string>
+    <string name="onb_first_farm_label">First farm name</string>
+    <string name="onb_first_farm_hint">e.g., Tank-side farm</string>
+    <string name="onb_finish_btn">Save &amp; Open App</string>
+    <string name="onb_skip">Skip for now</string>
+
+    <!-- Home -->
+    <string name="home_greeting">Namaskaram, %s</string>
+    <string name="home_greeting_default">Namaskaram Farmer</string>
+    <string name="home_season_card">This Season Summary</string>
+    <string name="home_expense_short">Expense</string>
+    <string name="home_income_short">Income</string>
+    <string name="home_net_short">Balance</string>
+    <string name="home_quick_actions">Quick Actions</string>
+    <string name="home_tile_expense">Expense</string>
+    <string name="home_tile_sale">Sale</string>
+    <string name="home_tile_activity">Work</string>
+    <string name="home_tile_diary">Diary</string>
+    <string name="home_tile_labour">Labour</string>
+    <string name="home_tile_tractor">Tractor</string>
+    <string name="home_tile_irrigation">Watering</string>
+    <string name="home_snap_photo">Snap Photo to Log</string>
+    <string name="home_extras_tile">Advanced / Extras</string>
+    <string name="home_today_tasks">Today &amp; Due Tasks</string>
+    <string name="home_pending_dues">Pending Receivables &amp; Payables</string>
+    <string name="home_active_timer">Active Machinery Timer</string>
+
+    <!-- Farms, Plots, Crops -->
+    <string name="farms_title">My Farms</string>
+    <string name="farms_add_btn">Add New Farm</string>
+    <string name="farms_edit_title">Edit Farm</string>
+    <string name="farms_name_label">Farm name</string>
+    <string name="farms_acres_label">Acres</string>
+    <string name="farms_guntas_label">Guntas (40 = 1 acre)</string>
+    <string name="farms_cents_label">Cents (100 = 1 acre)</string>
+    <string name="plots_title">Plots / Fields</string>
+    <string name="plots_add_btn">Add Plot</string>
+    <string name="plots_name_label">Plot name or number</string>
+    <string name="plots_soil_label">Soil type</string>
+    <string name="crops_title">Crops</string>
+    <string name="crops_add_btn">Add Crop</string>
+    <string name="crops_name_label">Crop name</string>
+    <string name="crops_variety_label">Seed variety (optional)</string>
+    <string name="crops_sowing_date">Sowing / Planting date</string>
+    <string name="crops_status_active">Growing</string>
+    <string name="crops_status_harvested">Harvested</string>
+
+    <!-- Activities, Diary -->
+    <string name="act_title">Farm Activities &amp; Calendar</string>
+    <string name="act_add_btn">Add Activity</string>
+    <string name="act_status_pending">To Do</string>
+    <string name="act_status_done">Done</string>
+    <string name="act_status_missed">Missed</string>
+    <string name="act_status_rescheduled">Rescheduled</string>
+    <string name="diary_title">Photo &amp; Voice Diary</string>
+    <string name="diary_add_btn">Add Photo / Voice</string>
+    <string name="diary_take_photo">Take Photo</string>
+    <string name="diary_pick_gallery">Pick from Gallery</string>
+    <string name="diary_voice_idle">Tap mic to record voice note (max 2 min)</string>
+    <string name="diary_voice_recording">Recording... tap to stop</string>
+
+    <!-- Accounts, Expenses, Sales -->
+    <string name="acc_title">Accounts &amp; Ledger</string>
+    <string name="exp_title">Expenses</string>
+    <string name="exp_add_btn">Add Expense</string>
+    <string name="sale_title">Sales &amp; Income</string>
+    <string name="sale_add_btn">Add Sale</string>
+    <string name="pay_paid">Paid / Received</string>
+    <string name="pay_partial">Partial</string>
+    <string name="pay_pending">Pending Due</string>
+
+    <!-- Labour, Machinery, Inventory, Field Ops, Contacts, Reports, Settings -->
+    <string name="lab_title">Labour Ledger</string>
+    <string name="lab_add_worker">Add Worker</string>
+    <string name="lab_daily_attendance">Today\'s Attendance</string>
+    <string name="lab_full_day">Full Day</string>
+    <string name="lab_half_day">Half Day</string>
+    <string name="lab_absent">Absent</string>
+    <string name="mach_title">Machinery Rental</string>
+    <string name="mach_start_btn">Start Timer</string>
+    <string name="mach_stop_btn">Stop &amp; Bill</string>
+    <string name="inv_title">Input Inventory</string>
+    <string name="inv_add_product">Add Product</string>
+    <string name="inv_purchase_btn">Log Purchase</string>
+    <string name="inv_use_btn">Log Usage</string>
+    <string name="irr_title">Irrigation Logs</string>
+    <string name="irr_add_btn">Log Watering</string>
+    <string name="harv_title">Harvest &amp; Storage</string>
+    <string name="harv_add_btn">Add Harvest</string>
+    <string name="soil_title">Soil Test Records</string>
+    <string name="soil_add_btn">Add Soil Test</string>
+    <string name="con_title">Contacts</string>
+    <string name="con_add_btn">Add Contact</string>
+    <string name="con_call_btn">Call Now</string>
+    <string name="rep_title">Profit &amp; Loss Report</string>
+    <string name="more_title">More Tools</string>
+    <string name="set_title">Settings &amp; Backup</string>
+    <string name="bak_title">Backup &amp; Restore</string>
+    <string name="bak_export_btn">Save Backup to Phone</string>
+    <string name="bak_restore_btn">Restore from Backup</string>
+</resources>

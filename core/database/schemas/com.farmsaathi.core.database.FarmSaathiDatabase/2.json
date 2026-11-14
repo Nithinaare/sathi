@@ -1,0 +1,3795 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "6806b1f3821c5d377d3cd61423d4482e",
+    "entities": [
+      {
+        "tableName": "farms",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `villageOrLocation` TEXT, `surveyNumber` TEXT, `totalAreaMicroAcres` INTEGER NOT NULL, `preferredAreaUnit` TEXT NOT NULL, `soilType` TEXT, `waterSource` TEXT, `latitude` REAL, `longitude` REAL, `photoPath` TEXT, `voiceNamePath` TEXT, `notes` TEXT, `isPrimary` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "villageOrLocation",
+            "columnName": "villageOrLocation",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "surveyNumber",
+            "columnName": "surveyNumber",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "totalAreaMicroAcres",
+            "columnName": "totalAreaMicroAcres",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preferredAreaUnit",
+            "columnName": "preferredAreaUnit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "soilType",
+            "columnName": "soilType",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "waterSource",
+            "columnName": "waterSource",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "photoPath",
+            "columnName": "photoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voiceNamePath",
+            "columnName": "voiceNamePath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isPrimary",
+            "columnName": "isPrimary",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_farms_isArchived",
+            "unique": false,
+            "columnNames": [
+              "isArchived"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_farms_isArchived` ON `${TABLE_NAME}` (`isArchived`)"
+          },
+          {
+            "name": "index_farms_name",
+            "unique": false,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_farms_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ]
+      },
+      {
+        "tableName": "plots",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `name` TEXT NOT NULL, `areaMicroAcres` INTEGER NOT NULL, `preferredAreaUnit` TEXT NOT NULL, `soilType` TEXT, `irrigationSource` TEXT, `latitude` REAL, `longitude` REAL, `photoPaths` TEXT NOT NULL, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "areaMicroAcres",
+            "columnName": "areaMicroAcres",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preferredAreaUnit",
+            "columnName": "preferredAreaUnit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "soilType",
+            "columnName": "soilType",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "irrigationSource",
+            "columnName": "irrigationSource",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "photoPaths",
+            "columnName": "photoPaths",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_plots_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_plots_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_plots_farmId_isArchived",
+            "unique": false,
+            "columnNames": [
+              "farmId",
+              "isArchived"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_plots_farmId_isArchived` ON `${TABLE_NAME}` (`farmId`, `isArchived`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "crop_templates",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `templateKey` TEXT NOT NULL, `cropNameTe` TEXT NOT NULL, `cropNameEn` TEXT NOT NULL, `defaultSeason` TEXT NOT NULL, `expectedDurationDays` INTEGER NOT NULL, `defaultYieldUnit` TEXT NOT NULL, `stages` TEXT NOT NULL, `isStarterTemplate` INTEGER NOT NULL, `isEditable` INTEGER NOT NULL, `disclaimerTe` TEXT NOT NULL, `disclaimerEn` TEXT NOT NULL, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "templateKey",
+            "columnName": "templateKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropNameTe",
+            "columnName": "cropNameTe",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropNameEn",
+            "columnName": "cropNameEn",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultSeason",
+            "columnName": "defaultSeason",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expectedDurationDays",
+            "columnName": "expectedDurationDays",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultYieldUnit",
+            "columnName": "defaultYieldUnit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stages",
+            "columnName": "stages",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isStarterTemplate",
+            "columnName": "isStarterTemplate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isEditable",
+            "columnName": "isEditable",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "disclaimerTe",
+            "columnName": "disclaimerTe",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "disclaimerEn",
+            "columnName": "disclaimerEn",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_crop_templates_templateKey",
+            "unique": true,
+            "columnNames": [
+              "templateKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_crop_templates_templateKey` ON `${TABLE_NAME}` (`templateKey`)"
+          },
+          {
+            "name": "index_crop_templates_isArchived",
+            "unique": false,
+            "columnNames": [
+              "isArchived"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_templates_isArchived` ON `${TABLE_NAME}` (`isArchived`)"
+          }
+        ]
+      },
+      {
+        "tableName": "crop_cycles",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER NOT NULL, `templateId` INTEGER, `cropName` TEXT NOT NULL, `variety` TEXT, `season` TEXT NOT NULL, `cropYear` INTEGER NOT NULL, `plantedAreaMicroAcres` INTEGER NOT NULL, `sowingDateEpochDay` INTEGER NOT NULL, `expectedHarvestEpochDay` INTEGER, `actualHarvestEpochDay` INTEGER, `status` TEXT NOT NULL, `isIntercrop` INTEGER NOT NULL, `voiceNamePath` TEXT, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`templateId`) REFERENCES `crop_templates`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "templateId",
+            "columnName": "templateId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropName",
+            "columnName": "cropName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "variety",
+            "columnName": "variety",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "season",
+            "columnName": "season",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropYear",
+            "columnName": "cropYear",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plantedAreaMicroAcres",
+            "columnName": "plantedAreaMicroAcres",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sowingDateEpochDay",
+            "columnName": "sowingDateEpochDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expectedHarvestEpochDay",
+            "columnName": "expectedHarvestEpochDay",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "actualHarvestEpochDay",
+            "columnName": "actualHarvestEpochDay",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isIntercrop",
+            "columnName": "isIntercrop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "voiceNamePath",
+            "columnName": "voiceNamePath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_crop_cycles_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_cycles_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_crop_cycles_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_cycles_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_crop_cycles_templateId",
+            "unique": false,
+            "columnNames": [
+              "templateId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_cycles_templateId` ON `${TABLE_NAME}` (`templateId`)"
+          },
+          {
+            "name": "index_crop_cycles_status_isArchived",
+            "unique": false,
+            "columnNames": [
+              "status",
+              "isArchived"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_cycles_status_isArchived` ON `${TABLE_NAME}` (`status`, `isArchived`)"
+          },
+          {
+            "name": "index_crop_cycles_sowingDateEpochDay",
+            "unique": false,
+            "columnNames": [
+              "sowingDateEpochDay"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_cycles_sowingDateEpochDay` ON `${TABLE_NAME}` (`sowingDateEpochDay`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_templates",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "templateId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "crop_tasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER, `title` TEXT NOT NULL, `description` TEXT, `category` TEXT NOT NULL, `dueDateEpochDay` INTEGER NOT NULL, `offsetFromSowingDays` INTEGER, `sourceTemplateStageKey` TEXT, `priority` TEXT NOT NULL, `status` TEXT NOT NULL, `completedAtEpochMillis` INTEGER, `reminderEnabled` INTEGER NOT NULL, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueDateEpochDay",
+            "columnName": "dueDateEpochDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "offsetFromSowingDays",
+            "columnName": "offsetFromSowingDays",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "sourceTemplateStageKey",
+            "columnName": "sourceTemplateStageKey",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completedAtEpochMillis",
+            "columnName": "completedAtEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "reminderEnabled",
+            "columnName": "reminderEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_crop_tasks_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_tasks_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_crop_tasks_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_tasks_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_crop_tasks_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_tasks_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_crop_tasks_status_isArchived_dueDateEpochDay",
+            "unique": false,
+            "columnNames": [
+              "status",
+              "isArchived",
+              "dueDateEpochDay"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_tasks_status_isArchived_dueDateEpochDay` ON `${TABLE_NAME}` (`status`, `isArchived`, `dueDateEpochDay`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "diary_entries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER, `entryDateEpochMillis` INTEGER NOT NULL, `category` TEXT NOT NULL, `title` TEXT NOT NULL, `notes` TEXT, `photoPaths` TEXT NOT NULL, `voiceNotePath` TEXT, `voiceNoteDurationMillis` INTEGER, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "entryDateEpochMillis",
+            "columnName": "entryDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "photoPaths",
+            "columnName": "photoPaths",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "voiceNotePath",
+            "columnName": "voiceNotePath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voiceNoteDurationMillis",
+            "columnName": "voiceNoteDurationMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_diary_entries_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_diary_entries_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_diary_entries_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_diary_entries_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_diary_entries_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_diary_entries_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_diary_entries_isArchived_entryDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "isArchived",
+              "entryDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_diary_entries_isArchived_entryDateEpochMillis` ON `${TABLE_NAME}` (`isArchived`, `entryDateEpochMillis`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ledger_entries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `entryType` TEXT NOT NULL, `sourceType` TEXT NOT NULL, `sourceId` INTEGER, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER, `contactId` INTEGER, `category` TEXT NOT NULL, `title` TEXT NOT NULL, `notes` TEXT, `totalAmountPaise` INTEGER NOT NULL, `settledAmountPaise` INTEGER NOT NULL, `paymentStatus` TEXT NOT NULL, `paymentMode` TEXT NOT NULL, `transactionDateEpochMillis` INTEGER NOT NULL, `dueDateEpochMillis` INTEGER, `receiptPhotoPath` TEXT, `voiceNotePath` TEXT, `isVoided` INTEGER NOT NULL, `voidReason` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`contactId`) REFERENCES `contacts`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryType",
+            "columnName": "entryType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceType",
+            "columnName": "sourceType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceId",
+            "columnName": "sourceId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "contactId",
+            "columnName": "contactId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "totalAmountPaise",
+            "columnName": "totalAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "settledAmountPaise",
+            "columnName": "settledAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentStatus",
+            "columnName": "paymentStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentMode",
+            "columnName": "paymentMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "transactionDateEpochMillis",
+            "columnName": "transactionDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueDateEpochMillis",
+            "columnName": "dueDateEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "receiptPhotoPath",
+            "columnName": "receiptPhotoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voiceNotePath",
+            "columnName": "voiceNotePath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isVoided",
+            "columnName": "isVoided",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "voidReason",
+            "columnName": "voidReason",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_ledger_entries_sourceType_sourceId",
+            "unique": true,
+            "columnNames": [
+              "sourceType",
+              "sourceId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_ledger_entries_sourceType_sourceId` ON `${TABLE_NAME}` (`sourceType`, `sourceId`)"
+          },
+          {
+            "name": "index_ledger_entries_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_entries_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_ledger_entries_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_entries_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_ledger_entries_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_entries_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_ledger_entries_contactId",
+            "unique": false,
+            "columnNames": [
+              "contactId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_entries_contactId` ON `${TABLE_NAME}` (`contactId`)"
+          },
+          {
+            "name": "index_ledger_entries_isVoided_isArchived_entryType_transactionDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "isVoided",
+              "isArchived",
+              "entryType",
+              "transactionDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_entries_isVoided_isArchived_entryType_transactionDateEpochMillis` ON `${TABLE_NAME}` (`isVoided`, `isArchived`, `entryType`, `transactionDateEpochMillis`)"
+          },
+          {
+            "name": "index_ledger_entries_paymentStatus_isVoided_isArchived",
+            "unique": false,
+            "columnNames": [
+              "paymentStatus",
+              "isVoided",
+              "isArchived"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_ledger_entries_paymentStatus_isVoided_isArchived` ON `${TABLE_NAME}` (`paymentStatus`, `isVoided`, `isArchived`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "contacts",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "contactId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "expense_details",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER, `contactId` INTEGER, `category` TEXT NOT NULL, `description` TEXT NOT NULL, `vendorNameSnapshot` TEXT, `billNumber` TEXT, `quantityMilliUnits` INTEGER, `quantityUnit` TEXT, `unitPricePaise` INTEGER, `totalAmountPaise` INTEGER NOT NULL, `paidAmountPaise` INTEGER NOT NULL, `paymentMode` TEXT NOT NULL, `expenseDateEpochMillis` INTEGER NOT NULL, `receiptPhotoPath` TEXT, `voiceNotePath` TEXT, `voiceNoteDurationMillis` INTEGER, `notes` TEXT, `isVoided` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`contactId`) REFERENCES `contacts`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "contactId",
+            "columnName": "contactId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vendorNameSnapshot",
+            "columnName": "vendorNameSnapshot",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "billNumber",
+            "columnName": "billNumber",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "quantityMilliUnits",
+            "columnName": "quantityMilliUnits",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "quantityUnit",
+            "columnName": "quantityUnit",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "unitPricePaise",
+            "columnName": "unitPricePaise",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "totalAmountPaise",
+            "columnName": "totalAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paidAmountPaise",
+            "columnName": "paidAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentMode",
+            "columnName": "paymentMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expenseDateEpochMillis",
+            "columnName": "expenseDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "receiptPhotoPath",
+            "columnName": "receiptPhotoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voiceNotePath",
+            "columnName": "voiceNotePath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voiceNoteDurationMillis",
+            "columnName": "voiceNoteDurationMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isVoided",
+            "columnName": "isVoided",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_expense_details_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_expense_details_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_expense_details_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_expense_details_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_expense_details_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_expense_details_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_expense_details_contactId",
+            "unique": false,
+            "columnNames": [
+              "contactId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_expense_details_contactId` ON `${TABLE_NAME}` (`contactId`)"
+          },
+          {
+            "name": "index_expense_details_expenseDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "expenseDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_expense_details_expenseDateEpochMillis` ON `${TABLE_NAME}` (`expenseDateEpochMillis`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "contacts",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "contactId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "crop_sales",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER NOT NULL, `harvestRecordId` INTEGER, `storageRecordId` INTEGER, `buyerContactId` INTEGER, `buyerNameSnapshot` TEXT NOT NULL, `mandiOrLocation` TEXT, `quantityMilliUnits` INTEGER NOT NULL, `quantityUnit` TEXT NOT NULL, `ratePerUnitPaise` INTEGER NOT NULL, `grossAmountPaise` INTEGER NOT NULL, `deductionsPaise` INTEGER NOT NULL, `netTotalAmountPaise` INTEGER NOT NULL, `amountReceivedPaise` INTEGER NOT NULL, `paymentStatus` TEXT NOT NULL, `paymentMode` TEXT NOT NULL, `saleDateEpochMillis` INTEGER NOT NULL, `dueDateEpochMillis` INTEGER, `receiptPhotoPath` TEXT, `notes` TEXT, `isVoided` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`harvestRecordId`) REFERENCES `harvest_records`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`storageRecordId`) REFERENCES `storage_records`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`buyerContactId`) REFERENCES `contacts`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "harvestRecordId",
+            "columnName": "harvestRecordId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "storageRecordId",
+            "columnName": "storageRecordId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "buyerContactId",
+            "columnName": "buyerContactId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "buyerNameSnapshot",
+            "columnName": "buyerNameSnapshot",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mandiOrLocation",
+            "columnName": "mandiOrLocation",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "quantityMilliUnits",
+            "columnName": "quantityMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantityUnit",
+            "columnName": "quantityUnit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ratePerUnitPaise",
+            "columnName": "ratePerUnitPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "grossAmountPaise",
+            "columnName": "grossAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deductionsPaise",
+            "columnName": "deductionsPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "netTotalAmountPaise",
+            "columnName": "netTotalAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amountReceivedPaise",
+            "columnName": "amountReceivedPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentStatus",
+            "columnName": "paymentStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentMode",
+            "columnName": "paymentMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "saleDateEpochMillis",
+            "columnName": "saleDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueDateEpochMillis",
+            "columnName": "dueDateEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "receiptPhotoPath",
+            "columnName": "receiptPhotoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isVoided",
+            "columnName": "isVoided",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_crop_sales_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_sales_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_crop_sales_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_sales_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_crop_sales_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_sales_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_crop_sales_harvestRecordId",
+            "unique": false,
+            "columnNames": [
+              "harvestRecordId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_sales_harvestRecordId` ON `${TABLE_NAME}` (`harvestRecordId`)"
+          },
+          {
+            "name": "index_crop_sales_storageRecordId",
+            "unique": false,
+            "columnNames": [
+              "storageRecordId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_sales_storageRecordId` ON `${TABLE_NAME}` (`storageRecordId`)"
+          },
+          {
+            "name": "index_crop_sales_buyerContactId",
+            "unique": false,
+            "columnNames": [
+              "buyerContactId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_sales_buyerContactId` ON `${TABLE_NAME}` (`buyerContactId`)"
+          },
+          {
+            "name": "index_crop_sales_saleDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "saleDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_crop_sales_saleDateEpochMillis` ON `${TABLE_NAME}` (`saleDateEpochMillis`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "harvest_records",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "harvestRecordId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "storage_records",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "storageRecordId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "contacts",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "buyerContactId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "workers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER, `name` TEXT NOT NULL, `phone` TEXT, `skillRole` TEXT, `photoPath` TEXT, `voiceNamePath` TEXT, `daysWorkedTenths` INTEGER NOT NULL, `defaultDailyWagePaise` INTEGER NOT NULL, `defaultHalfDayPercent` INTEGER NOT NULL, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phone",
+            "columnName": "phone",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "skillRole",
+            "columnName": "skillRole",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "photoPath",
+            "columnName": "photoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voiceNamePath",
+            "columnName": "voiceNamePath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "daysWorkedTenths",
+            "columnName": "daysWorkedTenths",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultDailyWagePaise",
+            "columnName": "defaultDailyWagePaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultHalfDayPercent",
+            "columnName": "defaultHalfDayPercent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_workers_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_workers_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_workers_isArchived_name",
+            "unique": false,
+            "columnNames": [
+              "isArchived",
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_workers_isArchived_name` ON `${TABLE_NAME}` (`isArchived`, `name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "worker_attendance",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workerId` INTEGER NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER, `workDateEpochDay` INTEGER NOT NULL, `status` TEXT NOT NULL, `baseDailyWagePaise` INTEGER NOT NULL, `halfDayPercent` INTEGER NOT NULL, `pieceRateUnit` TEXT, `pieceQuantityMilliUnits` INTEGER, `pieceUnitRatePaise` INTEGER, `wageAccruedPaise` INTEGER NOT NULL, `notes` TEXT, `isVoided` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`workerId`) REFERENCES `workers`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workerId",
+            "columnName": "workerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "workDateEpochDay",
+            "columnName": "workDateEpochDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "baseDailyWagePaise",
+            "columnName": "baseDailyWagePaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "halfDayPercent",
+            "columnName": "halfDayPercent",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pieceRateUnit",
+            "columnName": "pieceRateUnit",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "pieceQuantityMilliUnits",
+            "columnName": "pieceQuantityMilliUnits",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "pieceUnitRatePaise",
+            "columnName": "pieceUnitRatePaise",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "wageAccruedPaise",
+            "columnName": "wageAccruedPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isVoided",
+            "columnName": "isVoided",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_worker_attendance_workerId_workDateEpochDay",
+            "unique": true,
+            "columnNames": [
+              "workerId",
+              "workDateEpochDay"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_worker_attendance_workerId_workDateEpochDay` ON `${TABLE_NAME}` (`workerId`, `workDateEpochDay`)"
+          },
+          {
+            "name": "index_worker_attendance_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_attendance_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_worker_attendance_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_attendance_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_worker_attendance_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_attendance_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_worker_attendance_workDateEpochDay",
+            "unique": false,
+            "columnNames": [
+              "workDateEpochDay"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_attendance_workDateEpochDay` ON `${TABLE_NAME}` (`workDateEpochDay`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "workers",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "workerId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "worker_payments",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `workerId` INTEGER NOT NULL, `farmId` INTEGER NOT NULL, `cropCycleId` INTEGER, `paymentType` TEXT NOT NULL, `amountPaise` INTEGER NOT NULL, `paymentDateEpochMillis` INTEGER NOT NULL, `paymentMode` TEXT NOT NULL, `notes` TEXT, `isVoided` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`workerId`) REFERENCES `workers`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workerId",
+            "columnName": "workerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "paymentType",
+            "columnName": "paymentType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "amountPaise",
+            "columnName": "amountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentDateEpochMillis",
+            "columnName": "paymentDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentMode",
+            "columnName": "paymentMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isVoided",
+            "columnName": "isVoided",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_worker_payments_workerId",
+            "unique": false,
+            "columnNames": [
+              "workerId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_payments_workerId` ON `${TABLE_NAME}` (`workerId`)"
+          },
+          {
+            "name": "index_worker_payments_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_payments_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_worker_payments_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_payments_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_worker_payments_paymentDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "paymentDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_worker_payments_paymentDateEpochMillis` ON `${TABLE_NAME}` (`paymentDateEpochMillis`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "workers",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "workerId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "machinery_sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER, `providerContactId` INTEGER, `machineName` TEXT NOT NULL, `operatorName` TEXT, `operationType` TEXT NOT NULL, `equipmentKey` TEXT NOT NULL, `activeLockKey` TEXT, `usageType` TEXT NOT NULL, `billingMode` TEXT NOT NULL, `entryMode` TEXT NOT NULL, `status` TEXT NOT NULL, `startEpochMillis` INTEGER NOT NULL, `startElapsedRealtimeMillis` INTEGER, `startBootCount` INTEGER, `endEpochMillis` INTEGER, `endElapsedRealtimeMillis` INTEGER, `elapsedMinutes` INTEGER, `hourlyRatePaise` INTEGER, `perAcreRatePaise` INTEGER, `areaCoveredMicroAcres` INTEGER, `computedAmountPaise` INTEGER NOT NULL, `paidAmountPaise` INTEGER NOT NULL, `paymentStatus` TEXT NOT NULL, `notes` TEXT, `isVoided` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`providerContactId`) REFERENCES `contacts`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "providerContactId",
+            "columnName": "providerContactId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "machineName",
+            "columnName": "machineName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "operatorName",
+            "columnName": "operatorName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "operationType",
+            "columnName": "operationType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "equipmentKey",
+            "columnName": "equipmentKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "activeLockKey",
+            "columnName": "activeLockKey",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "usageType",
+            "columnName": "usageType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "billingMode",
+            "columnName": "billingMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "entryMode",
+            "columnName": "entryMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startEpochMillis",
+            "columnName": "startEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startElapsedRealtimeMillis",
+            "columnName": "startElapsedRealtimeMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "startBootCount",
+            "columnName": "startBootCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "endEpochMillis",
+            "columnName": "endEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "endElapsedRealtimeMillis",
+            "columnName": "endElapsedRealtimeMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "elapsedMinutes",
+            "columnName": "elapsedMinutes",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "hourlyRatePaise",
+            "columnName": "hourlyRatePaise",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "perAcreRatePaise",
+            "columnName": "perAcreRatePaise",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "areaCoveredMicroAcres",
+            "columnName": "areaCoveredMicroAcres",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "computedAmountPaise",
+            "columnName": "computedAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paidAmountPaise",
+            "columnName": "paidAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentStatus",
+            "columnName": "paymentStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isVoided",
+            "columnName": "isVoided",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_machinery_sessions_activeLockKey",
+            "unique": true,
+            "columnNames": [
+              "activeLockKey"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_machinery_sessions_activeLockKey` ON `${TABLE_NAME}` (`activeLockKey`)"
+          },
+          {
+            "name": "index_machinery_sessions_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_machinery_sessions_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_machinery_sessions_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_machinery_sessions_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_machinery_sessions_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_machinery_sessions_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_machinery_sessions_providerContactId",
+            "unique": false,
+            "columnNames": [
+              "providerContactId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_machinery_sessions_providerContactId` ON `${TABLE_NAME}` (`providerContactId`)"
+          },
+          {
+            "name": "index_machinery_sessions_status_startEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "status",
+              "startEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_machinery_sessions_status_startEpochMillis` ON `${TABLE_NAME}` (`status`, `startEpochMillis`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "contacts",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "providerContactId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "input_products",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER, `name` TEXT NOT NULL, `category` TEXT NOT NULL, `brand` TEXT, `unit` TEXT NOT NULL, `bagWeightMilliKg` INTEGER, `currentStockMilliUnits` INTEGER NOT NULL, `lowStockThresholdMilliUnits` INTEGER NOT NULL, `defaultUnitPricePaise` INTEGER, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "brand",
+            "columnName": "brand",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bagWeightMilliKg",
+            "columnName": "bagWeightMilliKg",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "currentStockMilliUnits",
+            "columnName": "currentStockMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lowStockThresholdMilliUnits",
+            "columnName": "lowStockThresholdMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultUnitPricePaise",
+            "columnName": "defaultUnitPricePaise",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_input_products_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_input_products_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_input_products_isArchived_category_name",
+            "unique": false,
+            "columnNames": [
+              "isArchived",
+              "category",
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_input_products_isArchived_category_name` ON `${TABLE_NAME}` (`isArchived`, `category`, `name`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "input_purchases",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `productId` INTEGER NOT NULL, `farmId` INTEGER NOT NULL, `cropCycleId` INTEGER, `vendorContactId` INTEGER, `vendorNameSnapshot` TEXT, `billNumber` TEXT, `quantityMilliUnits` INTEGER NOT NULL, `unit` TEXT NOT NULL, `unitPricePaise` INTEGER NOT NULL, `totalAmountPaise` INTEGER NOT NULL, `paidAmountPaise` INTEGER NOT NULL, `paymentStatus` TEXT NOT NULL, `paymentMode` TEXT NOT NULL, `purchaseDateEpochMillis` INTEGER NOT NULL, `expiryDateEpochDay` INTEGER, `dueDateEpochMillis` INTEGER, `receiptPhotoPath` TEXT, `notes` TEXT, `isVoided` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`productId`) REFERENCES `input_products`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`vendorContactId`) REFERENCES `contacts`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "productId",
+            "columnName": "productId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "vendorContactId",
+            "columnName": "vendorContactId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "vendorNameSnapshot",
+            "columnName": "vendorNameSnapshot",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "billNumber",
+            "columnName": "billNumber",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "quantityMilliUnits",
+            "columnName": "quantityMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unit",
+            "columnName": "unit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unitPricePaise",
+            "columnName": "unitPricePaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalAmountPaise",
+            "columnName": "totalAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paidAmountPaise",
+            "columnName": "paidAmountPaise",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentStatus",
+            "columnName": "paymentStatus",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "paymentMode",
+            "columnName": "paymentMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "purchaseDateEpochMillis",
+            "columnName": "purchaseDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiryDateEpochDay",
+            "columnName": "expiryDateEpochDay",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "dueDateEpochMillis",
+            "columnName": "dueDateEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "receiptPhotoPath",
+            "columnName": "receiptPhotoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isVoided",
+            "columnName": "isVoided",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_input_purchases_productId",
+            "unique": false,
+            "columnNames": [
+              "productId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_input_purchases_productId` ON `${TABLE_NAME}` (`productId`)"
+          },
+          {
+            "name": "index_input_purchases_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_input_purchases_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_input_purchases_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_input_purchases_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_input_purchases_vendorContactId",
+            "unique": false,
+            "columnNames": [
+              "vendorContactId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_input_purchases_vendorContactId` ON `${TABLE_NAME}` (`vendorContactId`)"
+          },
+          {
+            "name": "index_input_purchases_purchaseDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "purchaseDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_input_purchases_purchaseDateEpochMillis` ON `${TABLE_NAME}` (`purchaseDateEpochMillis`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "input_products",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "productId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "contacts",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "vendorContactId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "stock_movements",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `productId` INTEGER NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER, `cropCycleId` INTEGER, `purchaseId` INTEGER, `movementType` TEXT NOT NULL, `reason` TEXT NOT NULL, `signedDeltaMilliUnits` INTEGER NOT NULL, `balanceAfterMilliUnits` INTEGER NOT NULL, `unitCostPaiseSnapshot` INTEGER, `movementDateEpochMillis` INTEGER NOT NULL, `notes` TEXT, `createdAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`productId`) REFERENCES `input_products`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`purchaseId`) REFERENCES `input_purchases`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "productId",
+            "columnName": "productId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "purchaseId",
+            "columnName": "purchaseId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "movementType",
+            "columnName": "movementType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reason",
+            "columnName": "reason",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "signedDeltaMilliUnits",
+            "columnName": "signedDeltaMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "balanceAfterMilliUnits",
+            "columnName": "balanceAfterMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unitCostPaiseSnapshot",
+            "columnName": "unitCostPaiseSnapshot",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "movementDateEpochMillis",
+            "columnName": "movementDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_stock_movements_purchaseId",
+            "unique": true,
+            "columnNames": [
+              "purchaseId"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_stock_movements_purchaseId` ON `${TABLE_NAME}` (`purchaseId`)"
+          },
+          {
+            "name": "index_stock_movements_productId_movementDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "productId",
+              "movementDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_stock_movements_productId_movementDateEpochMillis` ON `${TABLE_NAME}` (`productId`, `movementDateEpochMillis`)"
+          },
+          {
+            "name": "index_stock_movements_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_stock_movements_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_stock_movements_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_stock_movements_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_stock_movements_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_stock_movements_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "input_products",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "productId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "input_purchases",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "purchaseId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "irrigation_logs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER NOT NULL, `cropCycleId` INTEGER, `irrigationDateEpochMillis` INTEGER NOT NULL, `durationMinutes` INTEGER, `source` TEXT NOT NULL, `method` TEXT NOT NULL, `nextWateringEpochDay` INTEGER, `motorHoursOrFuelNote` TEXT, `photoPath` TEXT, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "irrigationDateEpochMillis",
+            "columnName": "irrigationDateEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationMinutes",
+            "columnName": "durationMinutes",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "method",
+            "columnName": "method",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextWateringEpochDay",
+            "columnName": "nextWateringEpochDay",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "motorHoursOrFuelNote",
+            "columnName": "motorHoursOrFuelNote",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "photoPath",
+            "columnName": "photoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_irrigation_logs_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_irrigation_logs_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_irrigation_logs_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_irrigation_logs_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_irrigation_logs_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_irrigation_logs_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_irrigation_logs_irrigationDateEpochMillis",
+            "unique": false,
+            "columnNames": [
+              "irrigationDateEpochMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_irrigation_logs_irrigationDateEpochMillis` ON `${TABLE_NAME}` (`irrigationDateEpochMillis`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "harvest_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER NOT NULL, `cropCycleId` INTEGER NOT NULL, `harvestDateEpochDay` INTEGER NOT NULL, `quantityMilliUnits` INTEGER NOT NULL, `quantityUnit` TEXT NOT NULL, `bagCount` INTEGER, `moisturePercentTenths` INTEGER, `qualityGrade` TEXT, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "harvestDateEpochDay",
+            "columnName": "harvestDateEpochDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantityMilliUnits",
+            "columnName": "quantityMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantityUnit",
+            "columnName": "quantityUnit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bagCount",
+            "columnName": "bagCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "moisturePercentTenths",
+            "columnName": "moisturePercentTenths",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "qualityGrade",
+            "columnName": "qualityGrade",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_harvest_records_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_harvest_records_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_harvest_records_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_harvest_records_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_harvest_records_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_harvest_records_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_harvest_records_harvestDateEpochDay",
+            "unique": false,
+            "columnNames": [
+              "harvestDateEpochDay"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_harvest_records_harvestDateEpochDay` ON `${TABLE_NAME}` (`harvestDateEpochDay`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "storage_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `cropCycleId` INTEGER NOT NULL, `harvestRecordId` INTEGER, `storageLocation` TEXT NOT NULL, `quantityMilliUnits` INTEGER NOT NULL, `remainingQuantityMilliUnits` INTEGER NOT NULL, `quantityUnit` TEXT NOT NULL, `storedDateEpochDay` INTEGER NOT NULL, `bagCount` INTEGER, `status` TEXT NOT NULL, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`cropCycleId`) REFERENCES `crop_cycles`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`harvestRecordId`) REFERENCES `harvest_records`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cropCycleId",
+            "columnName": "cropCycleId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "harvestRecordId",
+            "columnName": "harvestRecordId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "storageLocation",
+            "columnName": "storageLocation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantityMilliUnits",
+            "columnName": "quantityMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remainingQuantityMilliUnits",
+            "columnName": "remainingQuantityMilliUnits",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantityUnit",
+            "columnName": "quantityUnit",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "storedDateEpochDay",
+            "columnName": "storedDateEpochDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bagCount",
+            "columnName": "bagCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_storage_records_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_storage_records_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_storage_records_cropCycleId",
+            "unique": false,
+            "columnNames": [
+              "cropCycleId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_storage_records_cropCycleId` ON `${TABLE_NAME}` (`cropCycleId`)"
+          },
+          {
+            "name": "index_storage_records_harvestRecordId",
+            "unique": false,
+            "columnNames": [
+              "harvestRecordId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_storage_records_harvestRecordId` ON `${TABLE_NAME}` (`harvestRecordId`)"
+          },
+          {
+            "name": "index_storage_records_status_isArchived",
+            "unique": false,
+            "columnNames": [
+              "status",
+              "isArchived"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_storage_records_status_isArchived` ON `${TABLE_NAME}` (`status`, `isArchived`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "crop_cycles",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "cropCycleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "harvest_records",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "harvestRecordId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "soil_test_records",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `farmId` INTEGER NOT NULL, `plotId` INTEGER NOT NULL, `testDateEpochDay` INTEGER NOT NULL, `labName` TEXT, `sampleNumber` TEXT, `phTenths` INTEGER, `ecMilliSiemensPerCmHundredths` INTEGER, `organicCarbonPercentHundredths` INTEGER, `nitrogenKgPerHaTenths` INTEGER, `phosphorusKgPerHaTenths` INTEGER, `potassiumKgPerHaTenths` INTEGER, `overallRating` TEXT, `reportPhotoPath` TEXT, `recommendationsNote` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL, FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT , FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "farmId",
+            "columnName": "farmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plotId",
+            "columnName": "plotId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "testDateEpochDay",
+            "columnName": "testDateEpochDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "labName",
+            "columnName": "labName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "sampleNumber",
+            "columnName": "sampleNumber",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "phTenths",
+            "columnName": "phTenths",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "ecMilliSiemensPerCmHundredths",
+            "columnName": "ecMilliSiemensPerCmHundredths",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "organicCarbonPercentHundredths",
+            "columnName": "organicCarbonPercentHundredths",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "nitrogenKgPerHaTenths",
+            "columnName": "nitrogenKgPerHaTenths",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "phosphorusKgPerHaTenths",
+            "columnName": "phosphorusKgPerHaTenths",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "potassiumKgPerHaTenths",
+            "columnName": "potassiumKgPerHaTenths",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "overallRating",
+            "columnName": "overallRating",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "reportPhotoPath",
+            "columnName": "reportPhotoPath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "recommendationsNote",
+            "columnName": "recommendationsNote",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_soil_test_records_farmId",
+            "unique": false,
+            "columnNames": [
+              "farmId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_soil_test_records_farmId` ON `${TABLE_NAME}` (`farmId`)"
+          },
+          {
+            "name": "index_soil_test_records_plotId",
+            "unique": false,
+            "columnNames": [
+              "plotId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_soil_test_records_plotId` ON `${TABLE_NAME}` (`plotId`)"
+          },
+          {
+            "name": "index_soil_test_records_testDateEpochDay",
+            "unique": false,
+            "columnNames": [
+              "testDateEpochDay"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_soil_test_records_testDateEpochDay` ON `${TABLE_NAME}` (`testDateEpochDay`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "farms",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "farmId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "plots",
+            "onDelete": "RESTRICT",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "plotId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "contacts",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `phone` TEXT, `contactType` TEXT NOT NULL, `villageOrMandi` TEXT, `upiId` TEXT, `voiceNamePath` TEXT, `notes` TEXT, `isArchived` INTEGER NOT NULL, `createdAtEpochMillis` INTEGER NOT NULL, `updatedAtEpochMillis` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phone",
+            "columnName": "phone",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "contactType",
+            "columnName": "contactType",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "villageOrMandi",
+            "columnName": "villageOrMandi",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "upiId",
+            "columnName": "upiId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voiceNamePath",
+            "columnName": "voiceNamePath",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isArchived",
+            "columnName": "isArchived",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtEpochMillis",
+            "columnName": "createdAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAtEpochMillis",
+            "columnName": "updatedAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_contacts_isArchived_contactType_name",
+            "unique": false,
+            "columnNames": [
+              "isArchived",
+              "contactType",
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_contacts_isArchived_contactType_name` ON `${TABLE_NAME}` (`isArchived`, `contactType`, `name`)"
+          },
+          {
+            "name": "index_contacts_phone",
+            "unique": false,
+            "columnNames": [
+              "phone"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_contacts_phone` ON `${TABLE_NAME}` (`phone`)"
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6806b1f3821c5d377d3cd61423d4482e')"
+    ]
+  }
+}

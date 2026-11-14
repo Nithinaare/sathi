@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App & Navigation -->
+    <string name="app_name">ఫామ్ సాథీ</string>
+    <string name="nav_home">హోమ్</string>
+    <string name="nav_farms">పంటలు</string>
+    <string name="nav_accounts">డబ్బు</string>
+    <string name="nav_more">అదనపువి</string>
+
+    <!-- Common Actions & States -->
+    <string name="common_save">సేవ్ చేయండి</string>
+    <string name="common_cancel">వద్దు</string>
+    <string name="common_edit">మార్చండి</string>
+    <string name="common_delete">తీసేయండి</string>
+    <string name="common_archive">పక్కన పెట్టండి</string>
+    <string name="common_confirm">సరే, చేయండి</string>
+    <string name="common_back">వెనక్కి</string>
+    <string name="common_listen">వినండి</string>
+    <string name="common_stop_audio">ఆపండి</string>
+    <string name="common_today">ఈరోజు</string>
+    <string name="common_yesterday">నిన్న</string>
+    <string name="common_all">అన్నీ</string>
+    <string name="common_see_all">అన్నీ చూడండి</string>
+    <string name="common_search">వెతకండి</string>
+    <string name="common_clear_search">వెతుకుడు చెరపండి</string>
+    <string name="common_retry">మళ్ళీ చూడండి</string>
+    <string name="common_loading">వివరాలు వస్తున్నాయి...</string>
+    <string name="common_offline_badge">ఫోన్‌లోనే సేవ్ అవుతుంది (నెట్ అక్కర్లేదు)</string>
+    <string name="common_saved_toast">వివరాలన్నీ సేవ్ అయ్యాయి</string>
+    <string name="common_required_field">ఇది తప్పకుండా రాయండి</string>
+    <string name="common_invalid_number">సరైన నంబర్ రాయండి</string>
+    <string name="common_notes_optional">చిన్న గమనిక (ఐచ్ఛికం)</string>
+    <string name="common_ok">సరే</string>
+    <string name="time_morning_slot">ఉదయం 07:00</string>
+    <string name="time_afternoon_slot">మధ్యాహ్నం 01:00</string>
+    <string name="time_evening_slot">సాయంత్రం 05:30</string>
+    <string name="time_minus_30m">−30 నిమి</string>
+    <string name="time_plus_30m">+30 నిమి</string>
+
+    <!-- Permissions -->
+    <string name="perm_camera_title">ఫోటో తీయడానికి అనుమతి కావాలి</string>
+    <string name="perm_camera_msg">పొలం, బిల్లుల ఫోటోలు ఫోన్‌లోనే దాచుకోవడానికి కెమెరా అనుమతి ఇవ్వండి.</string>
+    <string name="perm_mic_title">మాట రికార్డ్ చేయడానికి అనుమతి కావాలి</string>
+    <string name="perm_mic_msg">మీ మాటలను డైరీలో రికార్డ్ చేసి దాచుకోవడానికి మైక్ అనుమతి ఇవ్వండి.</string>
+    <string name="perm_grant">అనుమతి ఇవ్వండి</string>
+    <string name="perm_deny">ఇప్పుడు వద్దు</string>
+
+    <!-- Onboarding -->
+    <string name="onb_title">ఫామ్ సాథీకి స్వాగతం</string>
+    <string name="onb_subtitle">మీ పొలం ఖర్చులు, పంటలు, అమ్మకాల లెక్కలన్నీ సులువుగా ఫోన్‌లోనే రాసుకోండి.</string>
+    <string name="onb_lang_label">మీకు నచ్చిన భాష ఎంచుకోండి</string>
+    <string name="onb_get_started">మొదలుపెట్టండి</string>
+    <string name="onb_audio_mic_title">మాట &amp; మైక్ పరీక్ష</string>
+    <string name="onb_audio_test_btn">తెలుగు మాట పరీక్షించండి</string>
+    <string name="onb_mic_test_hint">మాట్లాడి మీ మైక్ సరిగ్గా ఉందో లేదో చూసుకోండి (ఐచ్ఛికం).</string>
+    <string name="onb_continue">ముందుకు వెళ్ళండి</string>
+    <string name="onb_profile_title">మీ వివరాలు &amp; మొదటి పొలం</string>
+    <string name="onb_name_label">మీ పేరు</string>
+    <string name="onb_name_hint">ఉదా: రాములు / వెంకటేశ్వర్లు</string>
+    <string name="onb_village_label">మీ ఊరు పేరు (ఐచ్ఛికం)</string>
+    <string name="onb_village_hint">ఉదా: నర్సాపూర్</string>
+    <string name="onb_first_farm_label">మొదటి పొలం పేరు</string>
+    <string name="onb_first_farm_hint">ఉదా: చెరువు కింద పొలం</string>
+    <string name="onb_finish_btn">సేవ్ చేసి లోపలికి వెళ్ళండి</string>
+    <string name="onb_skip">తర్వాత రాస్తాను</string>
+
+    <!-- Home -->
+    <string name="home_greeting">నమస్కారం, %s గారు</string>
+    <string name="home_greeting_default">నమస్కారం రైతన్నా</string>
+    <string name="home_season_card">ఈ సీజన్ లెక్క</string>
+    <string name="home_expense_short">ఖర్చు</string>
+    <string name="home_income_short">ఆదాయం</string>
+    <string name="home_net_short">మిగులు</string>
+    <string name="home_quick_actions">త్వరగా రాయండి</string>
+    <string name="home_tile_expense">ఖర్చు</string>
+    <string name="home_tile_sale">అమ్మకం</string>
+    <string name="home_tile_activity">పనులు</string>
+    <string name="home_tile_diary">డైరీ</string>
+    <string name="home_tile_labour">కూలీలు</string>
+    <string name="home_tile_tractor">ట్రాక్టర్</string>
+    <string name="home_tile_irrigation">నీళ్లు</string>
+    <string name="home_snap_photo">ఫోటో తీసి రాయండి</string>
+    <string name="home_extras_tile">అదనపు సౌకర్యాలు</string>
+    <string name="home_today_tasks">ఈరోజు &amp; బాకీ పనులు</string>
+    <string name="home_pending_dues">ఇవ్వవలసిన / రావలసిన బాకీలు</string>
+    <string name="home_active_timer">నడుస్తున్న యంత్రం టైమర్</string>
+
+    <!-- Farms, Plots, Crops -->
+    <string name="farms_title">నా పొలాలు</string>
+    <string name="farms_add_btn">కొత్త పొలం కలపండి</string>
+    <string name="farms_edit_title">పొలం వివరాలు మార్చండి</string>
+    <string name="farms_name_label">పొలం పేరు</string>
+    <string name="farms_acres_label">ఎకరాలు</string>
+    <string name="farms_guntas_label">గుంటలు (40 = 1 ఎకరం)</string>
+    <string name="farms_cents_label">సెంట్లు (100 = 1 ఎకరం)</string>
+    <string name="plots_title">మడులు / భాగాలు</string>
+    <string name="plots_add_btn">కొత్త మడి కలపండి</string>
+    <string name="plots_name_label">మడి పేరు లేదా నంబర్</string>
+    <string name="plots_soil_label">మట్టి రకం</string>
+    <string name="crops_title">పంటలు</string>
+    <string name="crops_add_btn">కొత్త పంట కలపండి</string>
+    <string name="crops_name_label">పంట పేరు</string>
+    <string name="crops_variety_label">విత్తనం రకం (ఐచ్ఛికం)</string>
+    <string name="crops_sowing_date">నాటిన / విత్తిన తేదీ</string>
+    <string name="crops_status_active">పెరుగుతోంది</string>
+    <string name="crops_status_harvested">కోత పూర్తయింది</string>
+
+    <!-- Activities, Diary -->
+    <string name="act_title">పొలం పనులు &amp; క్యాలెండర్</string>
+    <string name="act_add_btn">కొత్త పని రాయండి</string>
+    <string name="act_status_pending">చేయాలి</string>
+    <string name="act_status_done">పూర్తయింది</string>
+    <string name="act_status_missed">వాయిదా / తప్పింది</string>
+    <string name="act_status_rescheduled">తేదీ మార్చబడింది</string>
+    <string name="diary_title">ఫోటో &amp; మాట డైరీ</string>
+    <string name="diary_add_btn">కొత్త ఫోటో / మాట</string>
+    <string name="diary_take_photo">ఫోటో తీయండి</string>
+    <string name="diary_pick_gallery">గ్యాలరీ నుండి</string>
+    <string name="diary_voice_idle">మాట్లాడటానికి మైక్ నొక్కండి (గరిష్టంగా 2 నిమిషాలు)</string>
+    <string name="diary_voice_recording">రికార్డ్ అవుతోంది... ఆపడానికి నొక్కండి</string>
+
+    <!-- Accounts, Expenses, Sales -->
+    <string name="acc_title">ఖాతాలు &amp; లెక్కలు</string>
+    <string name="exp_title">ఖర్చుల పద్దు</string>
+    <string name="exp_add_btn">కొత్త ఖర్చు రాయండి</string>
+    <string name="sale_title">అమ్మకాలు &amp; ఆదాయం</string>
+    <string name="sale_add_btn">కొత్త అమ్మకం రాయండి</string>
+    <string name="pay_paid">అందింది / చెల్లించాము</string>
+    <string name="pay_partial">సగం అందింది</string>
+    <string name="pay_pending">బాకీ ఉంది</string>
+
+    <!-- Labour, Machinery, Inventory, Field Ops, Contacts, Reports, Settings -->
+    <string name="lab_title">కూలీల లెక్క</string>
+    <string name="lab_add_worker">కొత్త కూలీ పేరు కలపండి</string>
+    <string name="lab_daily_attendance">ఈరోజు హాజరు</string>
+    <string name="lab_full_day">పూర్తి రోజు</string>
+    <string name="lab_half_day">సగం రోజు</string>
+    <string name="lab_absent">రాలేదు</string>
+    <string name="mach_title">యంత్రాల అద్దె</string>
+    <string name="mach_start_btn">పని మొదలు (స్టార్ట్)</string>
+    <string name="mach_stop_btn">పని పూర్తి (స్టాప్)</string>
+    <string name="inv_title">విత్తనాలు &amp; మందుల నిల్వ</string>
+    <string name="inv_add_product">కొత్త సరుకు కలపండి</string>
+    <string name="inv_purchase_btn">కొనుగోలు రాయండి</string>
+    <string name="inv_use_btn">వాడినది రాయండి</string>
+    <string name="irr_title">నీటి తడులు</string>
+    <string name="irr_add_btn">నీరు పెట్టినట్లు రాయండి</string>
+    <string name="harv_title">కోత &amp; నిల్వ</string>
+    <string name="harv_add_btn">కోత దిగుబడి రాయండి</string>
+    <string name="soil_title">మట్టి పరీక్షలు</string>
+    <string name="soil_add_btn">మట్టి పరీక్ష కలపండి</string>
+    <string name="con_title">పరిచయాలు &amp; వ్యాపారులు</string>
+    <string name="con_add_btn">కొత్త పేరు కలపండి</string>
+    <string name="con_call_btn">ఫోన్ చేయండి</string>
+    <string name="rep_title">లాభ-నష్టాల నివేదిక</string>
+    <string name="more_title">మరిన్ని వివరాలు</string>
+    <string name="set_title">సెట్టింగ్స్ &amp; బ్యాకప్</string>
+    <string name="bak_title">బ్యాకప్ &amp; రీస్టోర్</string>
+    <string name="bak_export_btn">ఫోన్‌లో బ్యాకప్ తీయండి</string>
+    <string name="bak_restore_btn">బ్యాకప్ తిరిగి తెచ్చుకోండి</string>
+</resources>

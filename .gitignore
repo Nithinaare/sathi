@@ -1,0 +1,22 @@
+# Signing & local environment (never commit secrets)
+*.jks
+*.keystore
+keystore.properties
+local.properties
+
+# Gradle & build outputs
+.gradle/
+build/
+*/build/
+*/*/build/
+*.apk
+*.aab
+*.ap_
+
+# IDE & OS
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+.kotlin/
+*.log
