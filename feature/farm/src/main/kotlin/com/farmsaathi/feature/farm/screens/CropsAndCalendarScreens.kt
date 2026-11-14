@@ -1155,6 +1155,7 @@ fun ActivityFormScreen(
     viewModel: CropAndCalendarViewModel,
     onBack: () -> Unit,
     taskId: Long? = null,
+    initialDueDateEpochDay: Long? = null,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val existing = remember(taskId, state.tasks) { taskId?.let { id -> state.tasks.firstOrNull { it.id == id } } }
@@ -1166,8 +1167,8 @@ fun ActivityFormScreen(
     }
     var title by remember(existing) { mutableStateOf(existing?.title.orEmpty()) }
     var category by remember(existing) { mutableStateOf(existing?.category ?: TaskCategory.OTHER) }
-    var dueEpochDay by remember(existing, state.todayEpochDay) {
-        mutableStateOf(existing?.dueDateEpochDay ?: state.todayEpochDay)
+    var dueEpochDay by remember(existing, initialDueDateEpochDay, state.todayEpochDay) {
+        mutableStateOf(existing?.dueDateEpochDay ?: initialDueDateEpochDay ?: state.todayEpochDay)
     }
     var notes by remember(existing) { mutableStateOf(existing?.description.orEmpty()) }
     var titleError by remember { mutableStateOf<String?>(null) }

@@ -7,7 +7,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
@@ -24,6 +26,7 @@ import com.farmsaathi.core.common.repository.GlobalSearchHit
 import com.farmsaathi.core.common.repository.MachineryRepository
 import com.farmsaathi.core.common.repository.SeasonFinancialTotals
 import com.farmsaathi.core.common.repository.StartMachinerySessionRequest
+import com.farmsaathi.core.common.repository.TeluguCalendarRepository
 import com.farmsaathi.core.datastore.UserPreferences
 import com.farmsaathi.core.datastore.UserPreferencesRepository
 import com.farmsaathi.core.designsystem.localization.ProvideFarmLocale
@@ -40,15 +43,24 @@ import com.farmsaathi.core.model.CropProfitabilitySummary
 import com.farmsaathi.core.model.CropSale
 import com.farmsaathi.core.model.CropTask
 import com.farmsaathi.core.model.CropTemplate
+import com.farmsaathi.core.model.CurrentKarteInfo
 import com.farmsaathi.core.model.ExpenseDetail
 import com.farmsaathi.core.model.Farm
 import com.farmsaathi.core.model.LedgerEntry
 import com.farmsaathi.core.model.LedgerEntryType
+import com.farmsaathi.core.model.LunarAlertType
+import com.farmsaathi.core.model.LunarDayAlert
 import com.farmsaathi.core.model.MachinerySession
 import com.farmsaathi.core.model.MoneyPaise
+import com.farmsaathi.core.model.Paksham
 import com.farmsaathi.core.model.PaymentMode
 import com.farmsaathi.core.model.Plot
 import com.farmsaathi.core.model.TaskStatus
+import com.farmsaathi.core.model.TeluguCalendarDay
+import com.farmsaathi.core.model.TeluguKarte
+import com.farmsaathi.core.model.TeluguKarteluCatalog
+import com.farmsaathi.core.model.TeluguMonth
+import com.farmsaathi.core.model.TeluguTithi
 import com.farmsaathi.feature.home.screens.HomeDashboardScreen
 import com.farmsaathi.feature.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.Flow
@@ -83,6 +95,7 @@ class HomeDashboardUiTest {
                 voiceManager = VoiceNoteManager(ctx),
                 audioEngine = StubAudioEngine(),
                 timeProvider = StubTimeProvider(),
+                teluguCalendarRepo = StubTeluguCalendarRepo(),
             )
         var expenseTapped = false
 
@@ -131,6 +144,7 @@ class HomeDashboardUiTest {
                 voiceManager = VoiceNoteManager(ctx),
                 audioEngine = StubAudioEngine(),
                 timeProvider = StubTimeProvider(),
+                teluguCalendarRepo = StubTeluguCalendarRepo(),
             )
 
         composeRule.setContent {
@@ -174,6 +188,7 @@ class HomeDashboardUiTest {
                 voiceManager = VoiceNoteManager(ctx),
                 audioEngine = StubAudioEngine(),
                 timeProvider = StubTimeProvider(),
+                teluguCalendarRepo = StubTeluguCalendarRepo(),
             )
         var backupTapped = false
 
@@ -227,6 +242,7 @@ class HomeDashboardUiTest {
                 voiceManager = VoiceNoteManager(ctx),
                 audioEngine = audioEngine,
                 timeProvider = StubTimeProvider(),
+                teluguCalendarRepo = StubTeluguCalendarRepo(),
             )
 
         composeRule.setContent {
@@ -254,6 +270,149 @@ class HomeDashboardUiTest {
 
         vm.playContactBadge(tractorContact)
         assertEquals("రమేష్, ట్రాక్టర్ యజమాని", audioEngine.lastDynamicText)
+    }
+
+    @Test
+    fun `home dashboard displays panchang karte banner with telugu details and handles click`() {
+        val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
+        val vm =
+            HomeViewModel(
+                prefsRepo = StubPrefsRepo(),
+                farmRepo = StubFarmRepo(),
+                financeRepo = StubFinanceRepo(),
+                machineryRepo = StubMachineryRepo(),
+                contactRepo = StubContactRepo(),
+                photoStorage = LocalPhotoStorage(ctx),
+                voiceManager = VoiceNoteManager(ctx),
+                audioEngine = StubAudioEngine(),
+                timeProvider = StubTimeProvider(),
+                teluguCalendarRepo = StubTeluguCalendarRepo(),
+            )
+        var calendarTapped = false
+
+        composeRule.setContent {
+            FarmSaathiTheme {
+                ProvideFarmLocale(AppLanguage.TELUGU) {
+                    HomeDashboardScreen(
+                        viewModel = vm,
+                        onAddExpense = {},
+                        onAddSale = {},
+                        onOpenActivities = {},
+                        onOpenAttendance = {},
+                        onOpenMachinery = {},
+                        onOpenAccounts = {},
+                        onOpenTask = {},
+                        onOpenMachinerySession = {},
+                        onOpenTeluguCalendar = { calendarTapped = true },
+                    )
+                }
+            }
+        }
+
+        composeRule.onNodeWithText("కార్తీకం • శుక్ల పక్షం పాడ్యమి").assertIsDisplayed()
+        composeRule.onNodeWithText("విశాఖ కార్తె").assertIsDisplayed()
+        composeRule.onNodeWithText("విశాఖ కార్తె 5వ రోజు").assertIsDisplayed()
+        composeRule.onNodeWithText("పంచాంగం & పనులు చూడండి")
+            .assertIsDisplayed()
+            .performClick()
+        assertTrue(calendarTapped)
+    }
+
+    @Test
+    fun `home dashboard panchang banner audio button triggers tts speech`() {
+        val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
+        val audioEngine = StubAudioEngine()
+        val vm =
+            HomeViewModel(
+                prefsRepo = StubPrefsRepo(),
+                farmRepo = StubFarmRepo(),
+                financeRepo = StubFinanceRepo(),
+                machineryRepo = StubMachineryRepo(),
+                contactRepo = StubContactRepo(),
+                photoStorage = LocalPhotoStorage(ctx),
+                voiceManager = VoiceNoteManager(ctx),
+                audioEngine = audioEngine,
+                timeProvider = StubTimeProvider(),
+                teluguCalendarRepo = StubTeluguCalendarRepo(),
+            )
+
+        composeRule.setContent {
+            FarmSaathiTheme {
+                ProvideFarmLocale(AppLanguage.TELUGU) {
+                    HomeDashboardScreen(
+                        viewModel = vm,
+                        onAddExpense = {},
+                        onAddSale = {},
+                        onOpenActivities = {},
+                        onOpenAttendance = {},
+                        onOpenMachinery = {},
+                        onOpenAccounts = {},
+                        onOpenTask = {},
+                        onOpenMachinerySession = {},
+                    )
+                }
+            }
+        }
+
+        composeRule.onNodeWithText("విశాఖ కార్తె 5వ రోజు").assertIsDisplayed()
+
+        // Disambiguate from header audio button (which has stateDescription "Stopped")
+        val bannerAudioMatcher =
+            hasText("వినండి") and SemanticsMatcher.keyNotDefined(SemanticsProperties.StateDescription)
+        composeRule.onNode(bannerAudioMatcher)
+            .assertIsDisplayed()
+            .performClick()
+
+        assertEquals(
+            "నేడు కార్తీక మాసం శుక్ల పక్షం పాడ్యమి. విశాఖ కార్తె 5వ రోజు.",
+            audioEngine.lastDynamicText,
+        )
+    }
+
+    @Test
+    fun `home dashboard gracefully handles null calendar day without crashing`() {
+        val ctx = ApplicationProvider.getApplicationContext<android.content.Context>()
+        val audioEngine = StubAudioEngine()
+        val vm =
+            HomeViewModel(
+                prefsRepo = StubPrefsRepo(),
+                farmRepo = StubFarmRepo(),
+                financeRepo = StubFinanceRepo(),
+                machineryRepo = StubMachineryRepo(),
+                contactRepo = StubContactRepo(),
+                photoStorage = LocalPhotoStorage(ctx),
+                voiceManager = VoiceNoteManager(ctx),
+                audioEngine = audioEngine,
+                timeProvider = StubTimeProvider(),
+                teluguCalendarRepo = StubTeluguCalendarRepo(day = null),
+            )
+
+        composeRule.setContent {
+            FarmSaathiTheme {
+                ProvideFarmLocale(AppLanguage.TELUGU) {
+                    HomeDashboardScreen(
+                        viewModel = vm,
+                        onAddExpense = {},
+                        onAddSale = {},
+                        onOpenActivities = {},
+                        onOpenAttendance = {},
+                        onOpenMachinery = {},
+                        onOpenAccounts = {},
+                        onOpenTask = {},
+                        onOpenMachinerySession = {},
+                        onOpenTeluguCalendar = {},
+                    )
+                }
+            }
+        }
+
+        // Verify that dashboard renders summary card even if calendar day is null
+        composeRule.onNodeWithText("నమస్కారం, రాములు గారు").assertIsDisplayed()
+        org.junit.Assert.assertNull(vm.uiState.value.todayCalendarDay)
+
+        // Audio toggle should safely no-op if day is null / alert tts is blank
+        vm.togglePanchangAudio()
+        org.junit.Assert.assertFalse(vm.uiState.value.isPanchangAudioPlaying)
     }
 
     private class StubPrefsRepo(
@@ -526,5 +685,78 @@ class HomeDashboardUiTest {
         override suspend fun searchOffline(query: String): List<GlobalSearchHit> = emptyList()
 
         override suspend fun getDataOverviewCounts(): DataOverviewCounts = counts
+    }
+
+    private class StubTeluguCalendarRepo(
+        private val day: TeluguCalendarDay? = createSampleDay(),
+        private val karte: CurrentKarteInfo = createSampleKarte(),
+        private val alert: LunarDayAlert = createSampleAlert(),
+    ) : TeluguCalendarRepository {
+        override fun observeDay(epochDay: Long): Flow<TeluguCalendarDay?> = flowOf(day)
+
+        override suspend fun getDay(epochDay: Long): TeluguCalendarDay? = day
+
+        override fun observeMonth(
+            year: Int,
+            month: Int,
+        ): Flow<List<TeluguCalendarDay>> = flowOf(day?.let { listOf(it) } ?: emptyList())
+
+        override suspend fun getMonthDays(
+            year: Int,
+            month: Int,
+        ): List<TeluguCalendarDay> = day?.let { listOf(it) } ?: emptyList()
+
+        override fun observeCurrentKarte(epochDay: Long): Flow<CurrentKarteInfo> = flowOf(karte)
+
+        override suspend fun getCurrentKarte(epochDay: Long): CurrentKarteInfo = karte
+
+        override fun observeTodayAlert(epochDay: Long): Flow<LunarDayAlert> = flowOf(alert)
+
+        override suspend fun getTodayAlert(epochDay: Long): LunarDayAlert = alert
+
+        override fun observeAllKartis(): Flow<List<TeluguKarte>> = flowOf(TeluguKarteluCatalog.ALL)
+
+        companion object {
+            fun createSampleDay() =
+                TeluguCalendarDay(
+                    epochDay = 20_650L,
+                    gregorianDate = "2026-11-10",
+                    teluguYear = "పరాభవ",
+                    teluguMonth = TeluguMonth.KARTHIKAM,
+                    paksham = Paksham.SHUKLA,
+                    tithi = TeluguTithi.PADYAMI,
+                    nakshatram = "అనూరాధ",
+                    karteId = 16,
+                    karteName = "విశాఖ",
+                    karteDayNumber = 5,
+                    totalKarteDays = 14,
+                    isAmavasya = false,
+                    isPournami = false,
+                    isFestival = false,
+                )
+
+            fun createSampleKarte() =
+                CurrentKarteInfo(
+                    karteId = 16,
+                    teluguName = "విశాఖ",
+                    englishName = "Vishakha",
+                    dayNumber = 5,
+                    totalDays = 14,
+                    daysRemaining = 9,
+                    progressPercentage = 35.7f,
+                    proverb = "విశాఖలో చల్లితే విరివిగా పంట",
+                    agriculturalSignificance = "వరి కోతలు ప్రారంభం.",
+                    recommendedCrops = listOf("వరి", "శనగ"),
+                )
+
+            fun createSampleAlert() =
+                LunarDayAlert(
+                    alertType = LunarAlertType.DAY_STANDARD,
+                    title = "విశాఖ కార్తె 5వ రోజు",
+                    subtitle = "వరి కోతలు ముమ్మరంగా సాగుతాయి. గింజ ఆరబెట్టండి.",
+                    ttsSpeechText = "నేడు కార్తీక మాసం శుక్ల పక్షం పాడ్యమి. విశాఖ కార్తె 5వ రోజు.",
+                    isPriority = false,
+                )
+        }
     }
 }

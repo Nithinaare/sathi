@@ -158,4 +158,21 @@
     <string name="bak_title">Backup &amp; Restore</string>
     <string name="bak_export_btn">Save Backup to Phone</string>
     <string name="bak_restore_btn">Restore from Backup</string>
+
+    <!-- Telugu Agricultural Calendar & Panchangam -->
+    <string name="cal_telugu_title">Telugu Farming Calendar</string>
+    <string name="cal_month_view_tab">Month View</string>
+    <string name="cal_karte_view_tab">Karte Wheel</string>
+    <string name="cal_amavasya_badge">Amavasya</string>
+    <string name="cal_pournami_badge">Pournami</string>
+    <string name="cal_day_details_title">Panchang &amp; Farm Tasks</string>
+    <string name="cal_add_task_for_day">+ Add Task for this Day</string>
+    <string name="cal_no_tasks_for_day">No farm tasks scheduled for this day</string>
+    <string name="cal_karte_guide_title">27 Kartis &amp; Farm Wisdom</string>
+    <string name="cal_days_remaining">%1$d days remaining</string>
+    <string name="cal_suited_crops">Suited Crops for this Karte</string>
+    <string name="cal_proverb_label">Farming Saying</string>
+    <string name="cal_advisory_label">Agricultural Advisory (Adanu)</string>
+    <string name="home_panchang_listen">Listen</string>
+    <string name="home_panchang_view_calendar">View Panchang</string>
 </resources>

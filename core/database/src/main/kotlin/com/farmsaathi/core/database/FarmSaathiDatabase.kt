@@ -16,6 +16,7 @@ import com.farmsaathi.core.database.dao.FieldOpsDao
 import com.farmsaathi.core.database.dao.FinanceDao
 import com.farmsaathi.core.database.dao.InventoryDao
 import com.farmsaathi.core.database.dao.LabourDao
+import com.farmsaathi.core.database.dao.LandMeasurementDao
 import com.farmsaathi.core.database.dao.MachineryDao
 import com.farmsaathi.core.database.dao.PlotDao
 import com.farmsaathi.core.database.entity.ContactEntity
@@ -30,6 +31,8 @@ import com.farmsaathi.core.database.entity.HarvestRecordEntity
 import com.farmsaathi.core.database.entity.InputProductEntity
 import com.farmsaathi.core.database.entity.InputPurchaseEntity
 import com.farmsaathi.core.database.entity.IrrigationLogEntity
+import com.farmsaathi.core.database.entity.LandBoundaryPointEntity
+import com.farmsaathi.core.database.entity.LandMeasurementEntity
 import com.farmsaathi.core.database.entity.LedgerEntryEntity
 import com.farmsaathi.core.database.entity.MachinerySessionEntity
 import com.farmsaathi.core.database.entity.PlotEntity
@@ -67,8 +70,10 @@ import javax.inject.Singleton
         StorageRecordEntity::class,
         SoilTestRecordEntity::class,
         ContactEntity::class,
+        LandMeasurementEntity::class,
+        LandBoundaryPointEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
 )
 @TypeConverters(FarmSaathiTypeConverters::class)
@@ -93,9 +98,11 @@ abstract class FarmSaathiDatabase : RoomDatabase() {
 
     abstract fun contactDao(): ContactDao
 
+    abstract fun landMeasurementDao(): LandMeasurementDao
+
     companion object {
         const val DATABASE_NAME = "farm_saathi.db"
-        const val SCHEMA_VERSION = 3
+        const val SCHEMA_VERSION = 4
 
         val MIGRATION_1_2 =
             object : Migration(1, 2) {
@@ -147,13 +154,55 @@ abstract class FarmSaathiDatabase : RoomDatabase() {
                 }
             }
 
+        val MIGRATION_3_4 =
+            object : Migration(3, 4) {
+                override fun migrate(db: SupportSQLiteDatabase) {
+                    db.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS `land_measurements` (
+                            `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                            `farmId` INTEGER NOT NULL,
+                            `plotId` INTEGER NOT NULL,
+                            `method` TEXT NOT NULL,
+                            `areaMicroAcres` INTEGER NOT NULL,
+                            `perimeterMeters` REAL,
+                            `startedAtEpochMillis` INTEGER NOT NULL,
+                            `completedAtEpochMillis` INTEGER NOT NULL,
+                            `appliedToPlot` INTEGER NOT NULL,
+                            `notes` TEXT,
+                            FOREIGN KEY(`farmId`) REFERENCES `farms`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT,
+                            FOREIGN KEY(`plotId`) REFERENCES `plots`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT
+                        )
+                        """.trimIndent(),
+                    )
+                    db.execSQL("CREATE INDEX IF NOT EXISTS `index_land_measurements_farmId` ON `land_measurements` (`farmId`)")
+                    db.execSQL("CREATE INDEX IF NOT EXISTS `index_land_measurements_plotId` ON `land_measurements` (`plotId`)")
+                    db.execSQL("CREATE INDEX IF NOT EXISTS `index_land_measurements_completedAtEpochMillis` ON `land_measurements` (`completedAtEpochMillis`)")
+                    db.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS `land_boundary_points` (
+                            `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                            `measurementId` INTEGER NOT NULL,
+                            `sequenceNumber` INTEGER NOT NULL,
+                            `latitude` REAL NOT NULL,
+                            `longitude` REAL NOT NULL,
+                            `horizontalAccuracyMeters` REAL,
+                            `capturedAtEpochMillis` INTEGER NOT NULL,
+                            FOREIGN KEY(`measurementId`) REFERENCES `land_measurements`(`id`) ON UPDATE NO ACTION ON DELETE RESTRICT
+                        )
+                        """.trimIndent(),
+                    )
+                    db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_land_boundary_points_measurementId_sequenceNumber` ON `land_boundary_points` (`measurementId`, `sequenceNumber`)")
+                }
+            }
+
         fun create(context: Context): FarmSaathiDatabase =
             Room.databaseBuilder(
                 context.applicationContext,
                 FarmSaathiDatabase::class.java,
                 DATABASE_NAME,
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
                 .build()
     }

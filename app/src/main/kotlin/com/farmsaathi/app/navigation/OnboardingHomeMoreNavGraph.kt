@@ -95,6 +95,7 @@ private fun NavGraphBuilder.homeAndMoreDestinations(nav: NavController) {
             onOpenBackup = { nav.navigate(FarmRoute.BackupRestore) },
             onOpenIrrigation = { nav.navigate(FarmRoute.IrrigationList()) },
             onOpenExtras = { nav.navigate(FarmRoute.MoreTab) },
+            onOpenTeluguCalendar = { nav.navigate(FarmRoute.TeluguCalendar()) },
             onSnapPhotoReady = { path, exifTs ->
                 nav.navigate(FarmRoute.SnapToLog(photoPath = path, exifEpochMillis = exifTs))
             },

@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.farmsaathi.core.common.navigation.FarmRoute
+import com.farmsaathi.feature.farm.measurement.ui.LandMeasurementScreen
 import com.farmsaathi.feature.farm.screens.ActivityFormScreen
 import com.farmsaathi.feature.farm.screens.ActivityListScreen
 import com.farmsaathi.feature.farm.screens.CropDetailScreen
@@ -15,10 +16,13 @@ import com.farmsaathi.feature.farm.screens.CropTemplatesScreen
 import com.farmsaathi.feature.farm.screens.FarmDetailScreen
 import com.farmsaathi.feature.farm.screens.FarmFormScreen
 import com.farmsaathi.feature.farm.screens.FarmsListScreen
+import com.farmsaathi.feature.farm.screens.KarteGuideScreen
 import com.farmsaathi.feature.farm.screens.PlotDetailScreen
 import com.farmsaathi.feature.farm.screens.PlotFormScreen
+import com.farmsaathi.feature.farm.screens.TeluguCalendarScreen
 import com.farmsaathi.feature.farm.viewmodel.CropAndCalendarViewModel
 import com.farmsaathi.feature.farm.viewmodel.FarmAndPlotViewModel
+import com.farmsaathi.feature.farm.viewmodel.TeluguCalendarViewModel
 
 fun NavGraphBuilder.farmAndCropsNavGraph(nav: NavController) {
     farmAndPlotDestinations(nav)
@@ -81,6 +85,15 @@ private fun NavGraphBuilder.farmAndPlotDestinations(nav: NavController) {
             onOpenCrop = { cId -> nav.navigate(FarmRoute.CropDetail(cId)) },
             onOpenIrrigation = { pId -> nav.navigate(FarmRoute.IrrigationList(plotId = pId)) },
             onOpenSoilTests = { pId -> nav.navigate(FarmRoute.SoilTestList(plotId = pId)) },
+            onMeasurePlot = { pId -> nav.navigate(FarmRoute.LandMeasurement(plotId = pId)) },
+        )
+    }
+
+    composable<FarmRoute.LandMeasurement> { backStack ->
+        val route: FarmRoute.LandMeasurement = backStack.toRoute()
+        LandMeasurementScreen(
+            plotId = route.plotId,
+            onBack = { nav.popBackStack() },
         )
     }
 
@@ -166,6 +179,30 @@ private fun NavGraphBuilder.cropAndActivityDestinations(nav: NavController) {
             viewModel = vm,
             onBack = { nav.popBackStack() },
             taskId = route.taskId,
+            initialDueDateEpochDay = route.initialDueDateEpochDay,
+        )
+    }
+
+    composable<FarmRoute.TeluguCalendar> { backStack ->
+        val route: FarmRoute.TeluguCalendar = backStack.toRoute()
+        val vm: TeluguCalendarViewModel = hiltViewModel()
+        TeluguCalendarScreen(
+            viewModel = vm,
+            initialEpochDay = route.initialEpochDay,
+            onBack = { nav.popBackStack() },
+            onOpenKarteGuide = { karteId -> nav.navigate(FarmRoute.KarteGuide(highlightKarteId = karteId)) },
+            onAddTask = { epochDay -> nav.navigate(FarmRoute.ActivityForm(initialDueDateEpochDay = epochDay)) },
+        )
+    }
+
+    composable<FarmRoute.KarteGuide> { backStack ->
+        val route: FarmRoute.KarteGuide = backStack.toRoute()
+        val vm: TeluguCalendarViewModel = hiltViewModel()
+        KarteGuideScreen(
+            viewModel = vm,
+            highlightKarteId = route.highlightKarteId,
+            onBack = { nav.popBackStack() },
+            onAddTask = { nav.navigate(FarmRoute.ActivityForm()) },
         )
     }
 }

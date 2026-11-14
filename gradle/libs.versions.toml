@@ -46,6 +46,7 @@ androidxJunit = "1.2.1"
 espresso = "3.6.1"
 robolectric = "4.14.1"
 turbine = "1.2.0"
+geographiclib = "2.1"
 
 [libraries]
 # Core Kotlin & Serialization
@@ -103,6 +104,9 @@ androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycl
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+
+# Geodesic area calculation
+geographiclib-java = { group = "net.sf.geographiclib", name = "GeographicLib-Java", version.ref = "geographiclib" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit4" }

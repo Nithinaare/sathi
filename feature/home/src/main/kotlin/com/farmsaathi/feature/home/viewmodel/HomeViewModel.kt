@@ -14,7 +14,9 @@ import com.farmsaathi.core.common.repository.ContactAndSearchRepository
 import com.farmsaathi.core.common.repository.FarmRepository
 import com.farmsaathi.core.common.repository.FinanceRepository
 import com.farmsaathi.core.common.repository.MachineryRepository
+import com.farmsaathi.core.common.repository.OfflineTeluguCalendarRepositoryImpl
 import com.farmsaathi.core.common.repository.SeasonFinancialTotals
+import com.farmsaathi.core.common.repository.TeluguCalendarRepository
 import com.farmsaathi.core.datastore.UserPreferences
 import com.farmsaathi.core.datastore.UserPreferencesRepository
 import com.farmsaathi.core.designsystem.localization.FarmLabels
@@ -22,12 +24,15 @@ import com.farmsaathi.core.media.LocalPhotoStorage
 import com.farmsaathi.core.model.AppLanguage
 import com.farmsaathi.core.model.Contact
 import com.farmsaathi.core.model.CropTask
+import com.farmsaathi.core.model.CurrentKarteInfo
 import com.farmsaathi.core.model.Farm
 import com.farmsaathi.core.model.FinancialCalculators
 import com.farmsaathi.core.model.LedgerEntry
+import com.farmsaathi.core.model.LunarDayAlert
 import com.farmsaathi.core.model.MachinerySession
 import com.farmsaathi.core.model.MoneyPaise
 import com.farmsaathi.core.model.TaskStatus
+import com.farmsaathi.core.model.TeluguCalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,6 +67,10 @@ data class HomeUiState(
     val playingContactId: Long? = null,
     val isAudioPlaying: Boolean = false,
     val showBackupBanner: Boolean = false,
+    val todayCalendarDay: TeluguCalendarDay? = null,
+    val todayKarteInfo: CurrentKarteInfo? = null,
+    val todayAlert: LunarDayAlert? = null,
+    val isPanchangAudioPlaying: Boolean = false,
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -74,6 +83,7 @@ constructor(
     private val financeRepo: FinanceRepository,
     private val machineryRepo: MachineryRepository,
     private val contactRepo: ContactAndSearchRepository,
+    private val teluguCalendarRepo: TeluguCalendarRepository = OfflineTeluguCalendarRepositoryImpl(),
     private val photoStorage: LocalPhotoStorage,
     private val voiceManager: VoiceNoteManager,
     private val audioEngine: AudioGuidanceEngine,
@@ -91,9 +101,24 @@ constructor(
 
     private val playingContactIdFlow = MutableStateFlow<Long?>(null)
     private val totalRecordsFlow = MutableStateFlow(0)
+    private val isPanchangAudioPlayingFlow = MutableStateFlow(false)
+    private var cachedTodayAlert: LunarDayAlert? = null
+    private val todayEpochDay = timeProvider.todayEpochDay()
 
     init {
         refreshBackupCheckCounts()
+        viewModelScope.launch(dispatchers.default) {
+            audioEngine.isSpeaking.collect { speaking ->
+                if (!speaking) {
+                    isPanchangAudioPlayingFlow.value = false
+                }
+            }
+        }
+        viewModelScope.launch(dispatchers.default) {
+            teluguCalendarRepo.observeTodayAlert(todayEpochDay).collect { alert ->
+                cachedTodayAlert = alert
+            }
+        }
     }
 
     fun refreshBackupCheckCounts() {
@@ -109,12 +134,16 @@ constructor(
             prefsRepo.userPreferences,
             farmRepo.observeFarms(),
             activeFarmIdFlow,
-            farmRepo.observeDueAndOverdueTasks(timeProvider.todayEpochDay()),
+            farmRepo.observeDueAndOverdueTasks(todayEpochDay),
             machineryRepo.observeRunningSessions(),
             contactRepo.observeContacts(),
             playingContactIdFlow,
             audioEngine.isSpeaking,
             totalRecordsFlow,
+            teluguCalendarRepo.observeDay(todayEpochDay),
+            teluguCalendarRepo.observeCurrentKarte(todayEpochDay),
+            teluguCalendarRepo.observeTodayAlert(todayEpochDay),
+            isPanchangAudioPlayingFlow,
         ) { arr ->
             val prefs = arr[0] as UserPreferences
 
@@ -135,6 +164,10 @@ constructor(
             val playingContactId = arr[6] as Long?
             val speaking = arr[7] as Boolean
             val totalRecords = arr[8] as Int
+            val calendarDay = arr[9] as TeluguCalendarDay?
+            val karteInfo = arr[10] as CurrentKarteInfo?
+            val todayAlert = arr[11] as LunarDayAlert?
+            val isPanchangAudioPlaying = arr[12] as Boolean
 
             val activeFarm =
                 farms.firstOrNull { it.id == prefs.activeFarmId }
@@ -163,8 +196,12 @@ constructor(
                 recentLedger = financePair.second,
                 contacts = contacts.take(8),
                 playingContactId = playingContactId,
-                isAudioPlaying = speaking,
+                isAudioPlaying = speaking && !isPanchangAudioPlaying,
                 showBackupBanner = backupBannerVisible,
+                todayCalendarDay = calendarDay,
+                todayKarteInfo = karteInfo,
+                todayAlert = todayAlert,
+                isPanchangAudioPlaying = isPanchangAudioPlaying,
             )
         }.flowOn(dispatchers.default)
             .distinctUntilChanged()
@@ -183,7 +220,20 @@ constructor(
         }
     }
 
+    fun togglePanchangAudio() {
+        if (isPanchangAudioPlayingFlow.value) {
+            audioEngine.stop()
+            isPanchangAudioPlayingFlow.value = false
+            return
+        }
+        val alert = cachedTodayAlert ?: uiState.value.todayAlert ?: return
+        if (alert.ttsSpeechText.isBlank()) return
+        isPanchangAudioPlayingFlow.value = true
+        audioEngine.speakDynamicText(alert.ttsSpeechText, useTelugu = true)
+    }
+
     fun toggleHomeAudio() {
+        isPanchangAudioPlayingFlow.value = false
         val useTe = uiState.value.prefs.language == AppLanguage.TELUGU
         audioEngine.speakCue(AudioCueCatalog.HOME_SUMMARY, useTe)
     }
@@ -267,6 +317,9 @@ constructor(
 
     override fun onCleared() {
         voiceManager.stopPlayback()
+        if (isPanchangAudioPlayingFlow.value) {
+            audioEngine.stop()
+        }
         super.onCleared()
     }
 }

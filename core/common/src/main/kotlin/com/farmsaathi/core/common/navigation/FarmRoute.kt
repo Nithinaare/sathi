@@ -27,6 +27,8 @@ sealed interface FarmRoute {
 
     @Serializable data class PlotDetail(val plotId: Long) : FarmRoute
 
+    @Serializable data class LandMeasurement(val plotId: Long) : FarmRoute
+
     @Serializable data class PlotForm(val farmId: Long, val plotId: Long? = null) : FarmRoute
 
     @Serializable data class CropList(val plotId: Long? = null) : FarmRoute
@@ -48,7 +50,13 @@ sealed interface FarmRoute {
         val taskId: Long? = null,
         val cropCycleId: Long? = null,
         val plotId: Long? = null,
+        val initialDueDateEpochDay: Long? = null,
     ) : FarmRoute
+
+    // 4b. Telugu Agricultural Calendar & Karte Guide
+    @Serializable data class TeluguCalendar(val initialEpochDay: Long? = null) : FarmRoute
+
+    @Serializable data class KarteGuide(val highlightKarteId: Int? = null) : FarmRoute
 
     // 5. Photo & Voice Diary
     @Serializable data class DiaryList(val cropCycleId: Long? = null, val plotId: Long? = null) : FarmRoute

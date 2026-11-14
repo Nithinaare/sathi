@@ -687,6 +687,7 @@ fun PlotDetailScreen(
     onOpenCrop: (Long) -> Unit,
     onOpenIrrigation: (Long) -> Unit,
     onOpenSoilTests: (Long) -> Unit,
+    onMeasurePlot: (Long) -> Unit = {},
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val plot = remember(state.plots, plotId) { state.plots.firstOrNull { it.id == plotId } }
@@ -769,6 +770,14 @@ fun PlotDetailScreen(
                         modifier = Modifier.weight(1f),
                     )
                 }
+            }
+            item(key = "plot_measurement_action", contentType = "measurement_action") {
+                FarmSecondaryButton(
+                    text = if (useTe) "మడి విస్తీర్ణం కొలవండి" else "Measure plot area",
+                    leadingIcon = Icons.Rounded.Terrain,
+                    onClick = { onMeasurePlot(plot.id) },
+                    speakDescription = if (useTe) "ఈ మడి ఎంత ఉందో GPS తో నడిచి లేదా పొడవు వెడల్పు రాసి కొలవండి." else "Measure this plot by walking its boundary or entering its dimensions.",
+                )
             }
             item(key = "plot_crops_header", contentType = "section_header") {
                 FarmSectionHeader(title = farmString(R.string.crops_title))

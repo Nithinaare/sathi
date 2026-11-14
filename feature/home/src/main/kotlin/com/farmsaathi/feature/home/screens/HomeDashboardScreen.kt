@@ -95,6 +95,7 @@ import com.farmsaathi.core.designsystem.theme.FarmTypography
 import com.farmsaathi.core.model.AppLanguage
 import com.farmsaathi.core.model.Contact
 import com.farmsaathi.core.model.MachinerySession
+import com.farmsaathi.feature.home.components.HomePanchangKarteBanner
 import com.farmsaathi.feature.home.viewmodel.HomeViewModel
 import kotlinx.coroutines.delay
 
@@ -116,6 +117,7 @@ fun HomeDashboardScreen(
     onOpenExtras: () -> Unit = {},
     onOpenBackup: () -> Unit = onOpenSettings,
     onSnapPhotoReady: (String, Long?) -> Unit = { _, _ -> },
+    onOpenTeluguCalendar: () -> Unit = {},
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val lang = state.prefs.language
@@ -176,6 +178,19 @@ fun HomeDashboardScreen(
                     BackupSafetyBanner(
                         useTe = useTe,
                         onOpenBackup = onOpenBackup,
+                    )
+                }
+            }
+
+            if (state.todayCalendarDay != null && state.todayAlert != null) {
+                item(key = "panchang_karte_banner", contentType = "panchang_karte_banner") {
+                    HomePanchangKarteBanner(
+                        calendarDay = state.todayCalendarDay,
+                        karteInfo = state.todayKarteInfo,
+                        alert = state.todayAlert,
+                        isPlayingAudio = state.isPanchangAudioPlaying,
+                        onPlayAudio = viewModel::togglePanchangAudio,
+                        onClick = onOpenTeluguCalendar,
                     )
                 }
             }

@@ -13,7 +13,10 @@ import com.farmsaathi.core.common.repository.FieldOpsRepository
 import com.farmsaathi.core.common.repository.FinanceRepository
 import com.farmsaathi.core.common.repository.InventoryRepository
 import com.farmsaathi.core.common.repository.LabourRepository
+import com.farmsaathi.core.common.repository.LandMeasurementRepository
 import com.farmsaathi.core.common.repository.MachineryRepository
+import com.farmsaathi.core.common.repository.OfflineTeluguCalendarRepositoryImpl
+import com.farmsaathi.core.common.repository.TeluguCalendarRepository
 import com.farmsaathi.core.database.FarmSaathiDatabase
 import com.farmsaathi.core.database.backup.LocalZipBackupProvider
 import com.farmsaathi.core.database.dao.ContactDao
@@ -24,6 +27,7 @@ import com.farmsaathi.core.database.dao.FieldOpsDao
 import com.farmsaathi.core.database.dao.FinanceDao
 import com.farmsaathi.core.database.dao.InventoryDao
 import com.farmsaathi.core.database.dao.LabourDao
+import com.farmsaathi.core.database.dao.LandMeasurementDao
 import com.farmsaathi.core.database.dao.MachineryDao
 import com.farmsaathi.core.database.dao.PlotDao
 import com.farmsaathi.core.database.repository.RoomContactAndSearchRepository
@@ -33,6 +37,7 @@ import com.farmsaathi.core.database.repository.RoomFieldOpsRepository
 import com.farmsaathi.core.database.repository.RoomFinanceRepository
 import com.farmsaathi.core.database.repository.RoomInventoryRepository
 import com.farmsaathi.core.database.repository.RoomLabourRepository
+import com.farmsaathi.core.database.repository.RoomLandMeasurementRepository
 import com.farmsaathi.core.database.repository.RoomMachineryRepository
 import dagger.Binds
 import dagger.Module
@@ -71,6 +76,8 @@ object DatabaseProvideModule {
 
     @Provides fun provideContactDao(db: FarmSaathiDatabase): ContactDao = db.contactDao()
 
+    @Provides fun provideLandMeasurementDao(db: FarmSaathiDatabase): LandMeasurementDao = db.landMeasurementDao()
+
     @Provides
     @Singleton
     fun provideTimeProvider(
@@ -80,6 +87,10 @@ object DatabaseProvideModule {
     @Provides
     @Singleton
     fun provideAppDispatchers(): AppDispatchers = DefaultAppDispatchers
+
+    @Provides
+    @Singleton
+    fun provideTeluguCalendarRepository(): TeluguCalendarRepository = OfflineTeluguCalendarRepositoryImpl()
 }
 
 @Module
@@ -108,6 +119,9 @@ abstract class DatabaseBindModule {
 
     @Binds @Singleton
     abstract fun bindContactRepo(impl: RoomContactAndSearchRepository): ContactAndSearchRepository
+
+    @Binds @Singleton
+    abstract fun bindLandMeasurementRepo(impl: RoomLandMeasurementRepository): LandMeasurementRepository
 
     @Binds @Singleton
     abstract fun bindBackupProvider(impl: LocalZipBackupProvider): BackupProvider

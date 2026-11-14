@@ -158,4 +158,21 @@
     <string name="bak_title">బ్యాకప్ &amp; రీస్టోర్</string>
     <string name="bak_export_btn">ఫోన్‌లో బ్యాకప్ తీయండి</string>
     <string name="bak_restore_btn">బ్యాకప్ తిరిగి తెచ్చుకోండి</string>
+
+    <!-- Telugu Agricultural Calendar & Panchangam -->
+    <string name="cal_telugu_title">తెలుగు వ్యవసాయ పంచాంగం</string>
+    <string name="cal_month_view_tab">నెలల పట్టిక</string>
+    <string name="cal_karte_view_tab">కార్తెల కాలచక్రం</string>
+    <string name="cal_amavasya_badge">అమావాస్య</string>
+    <string name="cal_pournami_badge">పౌర్ణమి</string>
+    <string name="cal_day_details_title">పంచాంగం &amp; పొలం పనులు</string>
+    <string name="cal_add_task_for_day">+ ఈ రోజుకు పని జోడించండి</string>
+    <string name="cal_no_tasks_for_day">ఈ రోజుకు షెడ్యూల్ చేసిన పనులేవీ లేవు</string>
+    <string name="cal_karte_guide_title">27 కార్తెలు &amp; సాగు విజ్ఞానం</string>
+    <string name="cal_days_remaining">%1$d రోజులు మిగిలి ఉన్నాయి</string>
+    <string name="cal_suited_crops">ఈ కార్తెకు అనువైన పంటలు</string>
+    <string name="cal_proverb_label">కార్తె సామెత</string>
+    <string name="cal_advisory_label">సాగు సూచన (అదను)</string>
+    <string name="home_panchang_listen">వినండి</string>
+    <string name="home_panchang_view_calendar">పంచాంగం చూడండి</string>
 </resources>
