@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Map tiles are loaded only while the farmer views the map. GPS capture/calculation remain local. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- Requested only when the farmer starts a GPS land measurement. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

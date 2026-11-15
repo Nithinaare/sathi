@@ -12,7 +12,7 @@
 5. **Crops:** Editable starter stage templates for Paddy, Cotton, Chilli, Maize, Groundnut, Red Gram + custom crops.
 6. **Accounting Rules:** Half-day = 50% daily rate (editable); hourly machinery prorated by minutes rounded half-up to nearest ₹1 (plus per-acre & flat-rate options); negative inventory blocked with quick Add Stock prompt.
 7. **Backup & Restore:** Full self-contained `.zip` (checkpointed SQLite DB via `PRAGMA wal_checkpoint(TRUNCATE)` + `filesDir/media/` + SHA-256 `manifest.json`) in `Downloads/FarmSaathiBackups` + 1-tap Share + rollback-safe restore behind `BackupProvider`.
-8. **Stage 1 Boundaries:** Zero Stage 2/3 features included (no internet permissions, weather API, speech-to-text/ASR, disease detection AI, receipt OCR, or Google Drive cloud sync).
+8. **Stage 1 Boundaries:** No weather API, speech-to-text/ASR, disease-detection AI, receipt OCR, or Google Drive cloud sync. The map-enabled land-measurement feature adds `INTERNET` permission only for optional MapLibre street/satellite tiles and user-confirmed offline street-map downloads. Farm records, GPS capture, area calculation, boundary editing, and local persistence remain offline-first.
 
 ## Feature & Phase Status
 | ID | Slice / Milestone | Status | Source Modules | Verification Evidence |
@@ -56,7 +56,7 @@
 
 | Item | Status | Verification / Notes |
 | --- | --- | --- |
-| **App Version & Offline Boundary** | DONE | `versionCode = 2`, `versionName = "1.1.0"`; merged release manifest verified with zero `INTERNET` permission |
+| **App Version & Offline Boundary** | DONE (historical v1.1.0 base) | `versionCode = 2`, `versionName = "1.1.0"`; this verification predates the later MapLibre integration, which adds `INTERNET` only for optional maps |
 | **Bottom Navigation & Extras Hub** | DONE | Simplified to 3 primary tabs (`Home`, `Crops`, `Money`); moved `Diary`, `Inventory`, `Farms`, and `Settings` into `MoreHubScreen` (`Extras`) |
 | **Snap Photo to Log & EXIF Extraction** | DONE | Added `LocalPhotoStorage` EXIF capture/gallery metadata extraction + `SnapToLogScreen` router to `Expense`, `Diary`, and `Irrigation` forms |
 | **Labour Hub, Wage Calculator & Days Counter** | DONE | Added quick wage calculator + group expense logging, photo-first worker creation, `daysWorkedTenths` stepper with undo, and `FarmVoiceNameBadge` audio names |
@@ -67,3 +67,17 @@
 | **Signed R8 Release APK** | DONE | `FarmSaathi-v1.1.0.apk` (`6,380,015` bytes); verified v2 signature via `apksigner` (`CN=Farm Saathi, OU=Personal, O=Farm Saathi, L=Hyderabad, ST=Telangana, C=IN`) |
 | **Live Device Install & Screenshot Verification (`SM_M176B`)** | DONE | Installed `FarmSaathi-v1.1.0.apk` (`versionCode = 2`) via ADB on `RZGL5289M3X` (`SM_M176B`); visually inspected live screenshots of Home, Labour Hub + Wage Calculator, Worker quick photo form, Watering EXIF form, Crops, Money, Sale, Expense, Contacts, and Extras, and fixed 4 real-device alignment/truncation issues |
 | **Remaining Physical Hardware Checks (Realme 5s / Interactive Mic & Shutter)** | PENDING | Interactive CameraX shutter photo EXIF test, `.m4a` voice name recording/playback, Telugu TTS volume check, and final acceptance on the target Realme 5s (API 29) remain open |
+
+
+## S13 — Map-Enabled Land Measurement Integration (`2026-11-14`)
+
+| Item | Status | Verification / Notes |
+| --- | --- | --- |
+| **Map SDK** | IMPLEMENTED — BUILD VERIFICATION PENDING | MapLibre Native Android OpenGL `13.5.4` integrated in `:feature:farm`; Android 10 minSdk compatibility is a project requirement; full Gradle dependency resolution/build still must be run in Antigravity. |
+| **Street / Place Map** | IMPLEMENTED — NETWORK CHECK PENDING | OpenFreeMap Liberty style, with OpenFreeMap/OpenMapTiles/OpenStreetMap attribution. Tiles are optional and map service has no SLA. |
+| **Satellite Basemap** | IMPLEMENTED — NETWORK CHECK PENDING | Esri World Imagery raster tiles, with the current service copyright attribution. Satellite imagery is online-only in this version. |
+| **Boundary Overlay & Editing** | IMPLEMENTED — UNIT TESTS ADDED | Local GeoJSON polygon/line/vertex overlay; move, insert-after and remove point; edited points are marked as manually adjusted and area is recalculated. |
+| **Offline Street Map Pack** | IMPLEMENTED — PROVIDER/DEVICE TEST PENDING | MapLibre offline region around selected plot, zoom 12–16, app guardrails 2,700 tiles / 40 MiB, no more than four HTTP requests, identifiable User-Agent. Satellite imagery is not downloaded. |
+| **Offline Core Behaviour** | DESIGN VERIFIED — DEVICE TEST PENDING | GPS capture, WGS84 area calculation, manual rectangle calculation, boundary editing and Room persistence do not require map tiles. Local boundary sketch is shown if map tiles cannot load. |
+| **Full Android Build / Tests** | PENDING | Run `:feature:farm:testDebugUnitTest`, `:app:assembleDebug`, `ktlintCheck`, `detekt`, and `:app:lintDebug` in Antigravity. Previous build environment could not resolve `services.gradle.org`; no successful map-feature Gradle build is claimed. |
+| **Realme 5s Acceptance** | PENDING | Verify street map, satellite layer, offline street pack, point editing and GPS capture on Android 10 outdoors. |

@@ -39,15 +39,12 @@ class GpsPointAcceptancePolicy(
     ): GpsFixDecision {
         if (!candidate.latitude.isFinite() || !candidate.longitude.isFinite() ||
             candidate.latitude !in -90.0..90.0 || candidate.longitude !in -180.0..180.0
-        ) {
-            return GpsFixDecision.Reject(GpsFixRejection.INVALID_COORDINATE)
-        }
+        ) return GpsFixDecision.Reject(GpsFixRejection.INVALID_COORDINATE)
 
-        if (!candidate.accuracyMeters.isFinite() || candidate.accuracyMeters <= 0.0 ||
-            candidate.accuracyMeters > config.maximumAccuracyMeters
-        ) {
-            return GpsFixDecision.Reject(GpsFixRejection.MISSING_OR_POOR_ACCURACY)
-        }
+        val accuracyMeters = candidate.accuracyMeters
+        if (accuracyMeters == null || !accuracyMeters.isFinite() || accuracyMeters <= 0.0 ||
+            accuracyMeters > config.maximumAccuracyMeters
+        ) return GpsFixDecision.Reject(GpsFixRejection.MISSING_OR_POOR_ACCURACY)
 
         val age = nowEpochMillis - candidate.capturedAtEpochMillis
         if (age > config.maximumFixAgeMillis || age < -config.maximumFutureClockSkewMillis) {

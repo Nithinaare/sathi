@@ -47,6 +47,8 @@ espresso = "3.6.1"
 robolectric = "4.14.1"
 turbine = "1.2.0"
 geographiclib = "2.1"
+maplibre = "11.13.1"
+okhttp = "4.12.0"
 
 [libraries]
 # Core Kotlin & Serialization
@@ -105,7 +107,9 @@ androidx-camera-view = { group = "androidx.camera", name = "camera-view", versio
 androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
-# Geodesic area calculation
+# Geospatial mapping and area calculation
+maplibre-android-opengl = { group = "org.maplibre.gl", name = "android-sdk-opengl", version.ref = "maplibre" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 geographiclib-java = { group = "net.sf.geographiclib", name = "GeographicLib-Java", version.ref = "geographiclib" }
 
 # Testing

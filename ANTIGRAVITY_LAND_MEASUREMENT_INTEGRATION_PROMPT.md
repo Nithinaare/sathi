@@ -31,7 +31,7 @@ Read `docs/land-measurement/README.md` before editing.
 2. Confirm dependency alias `libs.geographiclib.java` resolves to GeographicLib-Java 2.1.
 3. Confirm the `PolygonArea` Java API call compiles against the actual dependency: `PolygonArea(Geodesic.WGS84, false)`, `AddPoint(lat, lon)`, `Compute(false, true)`, and public `area` / `perimeter` result fields.
 4. Confirm `LocationManager.GPS_PROVIDER`, `allProviders`, the selected `requestLocationUpdates` overload and the `LocationListener` implementation are available at minSdk 29.
-5. Confirm location permissions are requested at runtime and the feature does not require `ACCESS_BACKGROUND_LOCATION`, internet or a map API.
+5. Confirm location permissions are requested at runtime and the feature does not require `ACCESS_BACKGROUND_LOCATION`. The GPS calculator is offline; the optional MapLibre street/satellite basemaps and street-map pack download require internet.
 6. Confirm the current plot area is stored in `areaMicroAcres` and the feature uses the existing `AreaConverter` rather than creating another plot-area field.
 7. Confirm migration SQL matches the Room entity schema exactly, including foreign keys and index names.
 8. Confirm no current source files were overwritten with older versions from the ZIP.
@@ -74,7 +74,7 @@ Verify the following journeys:
 9. Save-and-update changes plot area atomically while retaining the measurement history.
 10. Manual rectangle calculation accepts positive dimensions and rejects blank/zero/negative/invalid values.
 11. Measurement history survives app restart after a completed measurement.
-12. Core operation works offline.
+12. GPS capture, local calculation, boundary edits and persistence work offline. A downloaded OpenFreeMap street-map pack is visible offline; satellite imagery is online-only.
 
 ## Geospatial verification
 
@@ -97,7 +97,7 @@ Do not claim physical device verification unless the device was actually used. D
 - Do not silently overwrite the existing plot area.
 - Preserve raw accepted GPS points and timestamps in measurement history.
 - Keep all core behaviour offline.
-- Do not add cloud, map tile, analytics or backend requirements.
+- Do not add cloud, analytics or backend requirements. The supplied optional MapLibre tile integration may remain, but must never block core GPS measurement.
 - Do not mark Done without build/test evidence.
 
 ## Required final report
@@ -110,3 +110,16 @@ Return:
 5. Emulator/device test evidence, separated clearly.
 6. Known limitations and unverified items.
 7. APK path and installation steps if the build succeeds.
+
+
+## MapLibre map, imagery and offline pack review
+
+The integration includes a MapLibre Native Android OpenGL map view. Review `docs/land-measurement/MAP_AND_IMAGERY.md` and verify:
+
+- Street style: OpenFreeMap Liberty with visible OpenFreeMap, OpenMapTiles and OpenStreetMap attribution.
+- Satellite style: Esri World Imagery with visible Esri/imagery-provider attribution. Satellite imagery is online-only in this version.
+- Field boundary GeoJSON is rendered locally on the map; no app API sends the field polygon to the map provider. Map tile requests reveal tile coordinates to the provider.
+- Vertex editing: move a selected point, insert a point after the selected point, and remove a point while retaining at least three vertices. Recalculate WGS84 area after every edit. User-edited points must not retain fictitious GPS accuracy.
+- Offline street-map pack: same OpenFreeMap style URL, zoom 12–16, maximum four concurrent requests, app guardrails at 2,700 tiles or 40 MiB, and unique Farm Saathi User-Agent. Confirm completed regions are discoverable after process restart and load offline with the same style URL.
+- Never bulk-download from `tile.openstreetmap.org`. Re-check OpenFreeMap and Esri terms before changing providers, raising limits or public/commercial distribution.
+- If map loading fails, the local boundary sketch must remain available and the GPS/area workflow must continue.

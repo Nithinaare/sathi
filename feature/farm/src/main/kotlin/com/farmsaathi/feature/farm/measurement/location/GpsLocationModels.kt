@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 data class GpsLocationSample(
     val latitude: Double,
     val longitude: Double,
-    val accuracyMeters: Double,
+    val accuracyMeters: Double?,
     val capturedAtEpochMillis: Long,
 )
 

@@ -72,10 +72,18 @@ These are engineering guardrails, not a guarantee of area accuracy. Tune them af
 
 The polygon must have at least three distinct points, produce a non-zero area, and not self-intersect. A boundary ending too far from its start is rejected instead of being silently closed across a large gap. The closing tolerance is at least 5 m, scales up to 1.5 times the mean observed point accuracy, and is capped at 10 m. These are product guardrails, not a statement that a 5–10 m closure is survey-grade.
 
-## Offline and permission behaviour
+## Map, imagery and offline map support
+
+The GPS feature uses MapLibre Native Android 13.5.4 OpenGL renderer for a real geographical map. The map includes an OpenFreeMap/OpenStreetMap street layer and an Esri World Imagery satellite layer. The farmer can switch between them; the boundary overlay remains in the same geographic coordinates on both.
+
+The review screen supports moving, inserting and removing boundary vertices on the actual map. User-edited points are marked as manually adjusted and have no fabricated GPS accuracy value. The geodesic area calculation runs again after each edit.
+
+The farmer may download a small street-map region around the plot for offline use. It uses the same OpenFreeMap style URL, a limited zoom range, at most four concurrent requests and conservative app guardrails (2,700 tiles / 40 MiB). Satellite imagery is online-only in this version. See `MAP_AND_IMAGERY.md` for providers, attribution, limits and caveats.
+
+## GPS offline and permission behaviour
 
 - GPS coordinates are obtained from Android `LocationManager.GPS_PROVIDER` only.
-- No map tiles, Google Maps key, geocoding API or internet connection is required.
+- GPS capture, area calculation, manual measurement, boundary editing and persistence do not require internet. The geographical basemap requires internet unless the relevant street-map pack has already been downloaded.
 - The app declares `ACCESS_COARSE_LOCATION` and `ACCESS_FINE_LOCATION` and requests them only after the farmer starts a GPS measurement.
 - The feature requires precise location; approximate-only access is not enough to measure a field boundary.
 - It does not request `ACCESS_BACKGROUND_LOCATION` and does not run an always-on location service.
@@ -111,7 +119,7 @@ Do not hand-create that schema file.
 - Review result
 - Saved confirmation
 
-The GPS sketch is a normalized drawing of recorded points only. It is intentionally labelled as a sketch, not a geographic map or a north-up representation.
+The GPS capture and review screens use an actual MapLibre geographical map. If the map service is unavailable, an explicitly labelled local sketch fallback is shown.
 
 The interface uses existing Farm Saathi design-system components and the currently selected app language (Telugu or English). It adds a pre-permission explanation in Telugu/English and a settings route when permission was denied.
 
@@ -179,8 +187,10 @@ The following checks were completed while preparing this integration package:
 - The pure Kotlin geodesic-calculator and GPS-point-filter test methods were executed through a local Kotlin harness: 23 scenarios passed. **The harness used a test-only GeographicLib API stub**, so this is not a substitute for running the actual Gradle/JUnit test task against the real `GeographicLib-Java` artifact.
 - An independent Python GeographicLib WGS84 calculation verified the square test fixture's expected area (`12,309.072079001264 m²`) and perimeter (`443.7875332131202 m`). This independently verifies the fixture values, not the Java dependency linkage.
 - The exact `MIGRATION_3_4` SQL was extracted and exercised using SQLite: table/index creation, point insert, foreign-key check and `RESTRICT` behaviour passed.
-- Android manifest XML and Gradle version-catalog parsing passed. The manifest contains foreground coarse/fine location permissions and does not add internet or background-location permission.
-- The application Gradle tasks could **not** run in the preparation environment: the wrapper needed to download Gradle 8.9, but DNS resolution for `services.gradle.org` failed. Therefore no Android APK, Room/KSP-generated version-4 schema, Android lint result or real Gradle test report is included.
+- Android manifest XML, Gradle version-catalog parsing, and the satellite style JSON parsing passed. The manifest includes internet access for optional map tiles plus coarse/fine location permissions; no background-location permission was added.
+- A local Kotlin smoke harness compiled and ran the actual `BoundaryPointEditor`, `GpsPointAcceptancePolicy`, and `OfflineMapDownloadBudget` source files against a minimal test `GpsLocationSample` model: 18 assertions passed. This does not exercise Android, MapLibre or Compose.
+- The MapLibre API integration was checked against MapLibre's Android API documentation for `MapView`, custom OkHttp `Call.Factory`, offline regions and download status. This is source/API review, not compilation.
+- The application Gradle tasks could **not** run in the preparation environment: the wrapper needed to download Gradle 8.9, but DNS resolution for `services.gradle.org` failed. Therefore no Android APK, Room/KSP-generated version-4 schema, Android lint result or real Gradle test report for the map additions is included.
 - No physical Realme 5s GPS test has been performed. Outdoor accuracy and repeatability remain to be verified on the actual handset.
 
 Run the Gradle commands above in Antigravity/Android Studio with dependency-network access before treating the feature as build-verified.

@@ -8,8 +8,8 @@ import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +31,7 @@ import androidx.compose.material.icons.rounded.MyLocation
 import androidx.compose.material.icons.rounded.SquareFoot
 import androidx.compose.material.icons.rounded.Undo
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -49,13 +50,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -75,6 +72,7 @@ import com.farmsaathi.core.model.AreaConverter
 import com.farmsaathi.core.model.LandMeasurement
 import com.farmsaathi.core.model.LandMeasurementMethod
 import com.farmsaathi.feature.farm.measurement.location.GpsLocationSample
+import com.farmsaathi.feature.farm.measurement.offline.OfflineMapDownloadState
 import com.farmsaathi.feature.farm.measurement.viewmodel.GpsCaptureStatus
 import com.farmsaathi.feature.farm.measurement.viewmodel.LandMeasurementStep
 import com.farmsaathi.feature.farm.measurement.viewmodel.LandMeasurementUiState
@@ -82,11 +80,10 @@ import com.farmsaathi.feature.farm.measurement.viewmodel.LandMeasurementViewMode
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import kotlin.math.max
 
 @Composable
 fun LandMeasurementScreen(
-    plotId: Long?,
+    plotId: Long? = null,
     onBack: () -> Unit,
     viewModel: LandMeasurementViewModel = hiltViewModel(),
 ) {
@@ -105,7 +102,8 @@ fun LandMeasurementScreen(
                 state.gpsStatus in setOf(GpsCaptureStatus.RECORDING, GpsCaptureStatus.WAITING_FOR_FIX, GpsCaptureStatus.PAUSED)
         LandMeasurementStep.MANUAL_INPUT ->
             state.manualLengthFeet.isNotBlank() || state.manualWidthFeet.isNotBlank()
-        LandMeasurementStep.REVIEW -> state.calculation != null
+        LandMeasurementStep.REVIEW -> state.calculation != null ||
+            (state.method == LandMeasurementMethod.GPS_BOUNDARY && state.acceptedPoints.isNotEmpty())
         else -> false
     }
 
@@ -204,6 +202,11 @@ fun LandMeasurementScreen(
                     useTelugu = useTelugu,
                     onSaveOnly = { viewModel.saveMeasurement(applyAreaToPlot = false) },
                     onSaveAndApply = { showApplyAreaConfirmation = true },
+                    onMoveBoundaryPoint = viewModel::moveBoundaryPoint,
+                    onInsertBoundaryPointAfter = viewModel::insertBoundaryPointAfter,
+                    onRemoveBoundaryPoint = viewModel::removeBoundaryPoint,
+                    onDownloadOfflineMap = viewModel::downloadOfflineStreetMap,
+                    onCancelOfflineMapDownload = viewModel::cancelOfflineStreetMapDownload,
                     onBack = {
                         when (state.method) {
                             LandMeasurementMethod.GPS_BOUNDARY -> viewModel.chooseGpsMethod()
@@ -418,7 +421,12 @@ private fun GpsCaptureContent(
         color = FarmColors.SecondaryText,
     )
     GpsQualityCard(state, useTelugu)
-    BoundaryPreview(state.acceptedPoints, useTelugu)
+    MapLibreBoundaryMap(
+        points = state.acceptedPoints,
+        modifier = Modifier.fillMaxWidth().height(270.dp),
+        useTelugu = useTelugu,
+        closeBoundary = false,
+    )
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
         MetricPill(
             label = if (useTelugu) "నమోదైన మూలలు" else "Points recorded",
@@ -470,11 +478,7 @@ private fun GpsCaptureContent(
         isLoading = state.isCalculating,
     )
     NoticeCard(
-        text = if (useTelugu) {
-            "GPS కొలత జరుగుతున్నప్పుడు ఈ తెర తెరిచి ఉంచండి. ఫోన్ లాక్ చేస్తే కొలత ఆగుతుంది."
-        } else {
-            "Keep this screen open during the walk. The measurement pauses when the app goes to the background or the phone is locked."
-        },
+        text = if (useTelugu) "GPS కొలత జరుగుతున్నప్పుడు ఈ తెర తెరిచి ఉంచండి. ఫోన్ లాక్ చేస్తే కొలత ఆగుతుంది." else "Keep this screen open during the walk. The measurement pauses when the app goes to the background or the phone is locked.",
     )
 }
 
@@ -506,11 +510,7 @@ private fun ManualMeasurementContent(
         modifier = Modifier.fillMaxWidth(),
     )
     NoticeCard(
-        text = if (useTelugu) {
-            "ఈ పద్ధతి నాలుగు వైపులా సుమారుగా సమకోణాలున్న మడికి మాత్రమే. వంకర ఆకారానికి GPS పద్ధతి ఎంచుకోండి."
-        } else {
-            "Use this only for an approximately rectangular plot. Use GPS for irregular boundaries."
-        },
+        text = if (useTelugu) "ఈ పద్ధతి నాలుగు వైపులా సుమారుగా సమకోణాలున్న మడికి మాత్రమే. వంకర ఆకారానికి GPS పద్ధతి ఎంచుకోండి." else "Use this only for an approximately rectangular plot. Use GPS for irregular boundaries.",
     )
     FarmPrimaryButton(
         text = if (useTelugu) "విస్తీర్ణం లెక్కించండి" else "Calculate area",
@@ -527,10 +527,36 @@ private fun MeasurementReviewContent(
     useTelugu: Boolean,
     onSaveOnly: () -> Unit,
     onSaveAndApply: () -> Unit,
+    onMoveBoundaryPoint: (index: Int, latitude: Double, longitude: Double) -> Unit,
+    onInsertBoundaryPointAfter: (index: Int, latitude: Double, longitude: Double) -> Unit,
+    onRemoveBoundaryPoint: (index: Int) -> Unit,
+    onDownloadOfflineMap: () -> Unit,
+    onCancelOfflineMapDownload: () -> Unit,
     onBack: () -> Unit,
 ) {
     val result = state.calculation
     Text(if (useTelugu) "కొలతను ఒకసారి చూడండి" else "Review the measurement", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+    if (state.method == LandMeasurementMethod.GPS_BOUNDARY) {
+        BoundaryPointEditorContent(
+            points = state.acceptedPoints,
+            useTelugu = useTelugu,
+            isCalculating = state.isCalculating,
+            onMovePoint = onMoveBoundaryPoint,
+            onInsertPointAfter = onInsertBoundaryPointAfter,
+            onRemovePoint = onRemoveBoundaryPoint,
+        )
+        OfflineMapPackCard(
+            state = state.offlineMapDownloadState,
+            useTelugu = useTelugu,
+            onDownload = onDownloadOfflineMap,
+            onCancel = onCancelOfflineMapDownload,
+        )
+        state.calculationError?.let { error ->
+            NoticeCard(
+                text = if (useTelugu) "హద్దును సరిచూడండి: ${error.name}" else "The boundary needs attention: ${error.name.replace('_', ' ').lowercase()}",
+            )
+        }
+    }
     if (result != null) {
         Card(colors = CardDefaults.cardColors(containerColor = FarmColors.PrimaryForest)) {
             Column(Modifier.fillMaxWidth().padding(18.dp)) {
@@ -549,16 +575,11 @@ private fun MeasurementReviewContent(
                 )
             }
         }
-        val methodDesc = if (state.method == LandMeasurementMethod.GPS_BOUNDARY) {
-            if (useTelugu) "GPS తో నడిచి" else "GPS boundary walk"
-        } else {
-            if (useTelugu) "పొడవు × వెడల్పు" else "Manual rectangle"
-        }
-        DetailLine(if (useTelugu) "కొలిచిన పద్ధతి" else "Method", methodDesc)
+        DetailLine(if (useTelugu) "కొలిచిన పద్ధతి" else "Method", if (state.method == LandMeasurementMethod.GPS_BOUNDARY) if (useTelugu) "GPS తో నడిచి" else "GPS boundary walk" else if (useTelugu) "పొడవు × వెడల్పు" else "Manual rectangle")
         DetailLine(if (useTelugu) "చుట్టుకొలత" else "Perimeter", "${formatNumber(result.perimeterMeters)} m")
         if (state.method == LandMeasurementMethod.GPS_BOUNDARY) {
             DetailLine(if (useTelugu) "నమోదైన మూలలు" else "Boundary points", result.pointCount.toString())
-            val accuracyValues = state.acceptedPoints.map { it.accuracyMeters }
+            val accuracyValues = state.acceptedPoints.mapNotNull { it.accuracyMeters }
             if (accuracyValues.isNotEmpty()) {
                 DetailLine(if (useTelugu) "సగటు GPS స్పష్టత" else "Average GPS accuracy", "± ${formatNumber(accuracyValues.average())} m")
                 DetailLine(if (useTelugu) "గరిష్ఠ GPS లోపం" else "Worst recorded GPS accuracy", "± ${formatNumber(accuracyValues.maxOrNull() ?: 0.0)} m")
@@ -572,15 +593,12 @@ private fun MeasurementReviewContent(
                     )
                 }
             }
-            BoundaryPreview(state.acceptedPoints, useTelugu, closeBoundary = true)
+            val manuallyAdjusted = state.acceptedPoints.count { it.accuracyMeters == null }
+            if (manuallyAdjusted > 0) {
+                DetailLine(if (useTelugu) "మ్యాప్‌లో సరిచేసిన మూలలు" else "Map-adjusted points", manuallyAdjusted.toString())
+            }
         }
-        NoticeCard(
-            text = if (useTelugu) {
-                "ఇది ఫోన్‌తో వచ్చిన అంచనా మాత్రమే. మీ పాత మడి విస్తీర్ణం చరిత్రలో అలాగే ఉంటుంది."
-            } else {
-                "This is a phone-based estimate. The previous saved plot area remains in measurement history."
-            },
-        )
+        NoticeCard(text = if (useTelugu) "ఇది ఫోన్‌తో వచ్చిన అంచనా మాత్రమే. మీ పాత మడి విస్తీర్ణం చరిత్రలో అలాగే ఉంటుంది." else "This is a phone-based estimate. The previous saved plot area remains in measurement history.")
         FarmPrimaryButton(
             text = if (useTelugu) "కొలత మాత్రమే దాచండి" else "Save measurement only",
             onClick = onSaveOnly,
@@ -594,6 +612,208 @@ private fun MeasurementReviewContent(
         FarmSecondaryButton(text = if (useTelugu) "మళ్లీ కొలవండి" else "Measure again", onClick = onBack, enabled = !state.isSaving)
     }
 }
+
+@Composable
+private fun BoundaryPointEditorContent(
+    points: List<GpsLocationSample>,
+    useTelugu: Boolean,
+    isCalculating: Boolean,
+    onMovePoint: (Int, Double, Double) -> Unit,
+    onInsertPointAfter: (Int, Double, Double) -> Unit,
+    onRemovePoint: (Int) -> Unit,
+) {
+    var selectedIndex by remember { mutableStateOf(0) }
+    var editMode by remember { mutableStateOf(BoundaryMapEditMode.NONE) }
+    LaunchedEffect(points.size) {
+        selectedIndex = selectedIndex.coerceIn(0, (points.size - 1).coerceAtLeast(0))
+    }
+    val safeIndex = selectedIndex.coerceIn(0, (points.size - 1).coerceAtLeast(0))
+
+    Text(
+        if (useTelugu) "పొలం నిజమైన మ్యాప్" else "Your field on a real map",
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold,
+        color = FarmColors.MainText,
+    )
+    MapLibreBoundaryMap(
+        points = points,
+        modifier = Modifier.fillMaxWidth().height(300.dp),
+        useTelugu = useTelugu,
+        closeBoundary = true,
+        editMode = editMode,
+        selectedPointIndex = safeIndex,
+        onMapPointSelected = { latitude, longitude ->
+            when (editMode) {
+                BoundaryMapEditMode.NONE -> Unit
+                BoundaryMapEditMode.MOVE_SELECTED -> onMovePoint(safeIndex, latitude, longitude)
+                BoundaryMapEditMode.INSERT_AFTER_SELECTED -> onInsertPointAfter(safeIndex, latitude, longitude)
+            }
+            if (editMode == BoundaryMapEditMode.INSERT_AFTER_SELECTED) selectedIndex = safeIndex + 1
+            editMode = BoundaryMapEditMode.NONE
+        },
+    )
+    Text(
+        if (useTelugu) "ఏ మూలను సరిచేయాలో ఎంచుకోండి. తర్వాత మ్యాప్‌పై కొత్త స్థానం తాకండి." else "Choose a corner, then tap the map to move it or insert a point.",
+        style = MaterialTheme.typography.bodySmall,
+        color = FarmColors.SecondaryText,
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        points.forEachIndexed { index, point ->
+            TextButton(onClick = { selectedIndex = index; editMode = BoundaryMapEditMode.NONE }) {
+                Text(
+                    if (useTelugu) "మూల ${index + 1}" else "Point ${index + 1}",
+                    color = if (index == safeIndex) FarmColors.PrimaryForest else FarmColors.SecondaryText,
+                    fontWeight = if (index == safeIndex) FontWeight.Bold else FontWeight.Normal,
+                )
+            }
+        }
+    }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        OutlinedButton(
+            onClick = { editMode = BoundaryMapEditMode.MOVE_SELECTED },
+            enabled = points.isNotEmpty() && !isCalculating,
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(if (useTelugu) "మూల మార్చు" else "Move point")
+        }
+        OutlinedButton(
+            onClick = { editMode = BoundaryMapEditMode.INSERT_AFTER_SELECTED },
+            enabled = points.size >= 2 && !isCalculating,
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(if (useTelugu) "+ మూల చేర్చు" else "+ Add point")
+        }
+    }
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        OutlinedButton(
+            onClick = { onRemovePoint(safeIndex); selectedIndex = (safeIndex - 1).coerceAtLeast(0); editMode = BoundaryMapEditMode.NONE },
+            enabled = points.size > 3 && !isCalculating,
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(if (useTelugu) "ఎంచుకున్న మూల తీసేయండి" else "Remove selected point")
+        }
+        if (editMode != BoundaryMapEditMode.NONE) {
+            TextButton(onClick = { editMode = BoundaryMapEditMode.NONE }) {
+                Text(if (useTelugu) "రద్దు" else "Cancel")
+            }
+        }
+    }
+    if (points.any { it.accuracyMeters == null }) {
+        NoticeCard(
+            if (useTelugu) "మ్యాప్‌లో మార్చిన మూలలకు GPS స్పష్టత సమాచారం ఉండదు. అవి చేతితో సరిచేసిన స్థానాలుగా దాచబడతాయి." else "Map-edited points have no measured GPS accuracy. They are saved as manually adjusted coordinates."
+        )
+    }
+}
+
+@Composable
+private fun OfflineMapPackCard(
+    state: OfflineMapDownloadState,
+    useTelugu: Boolean,
+    onDownload: () -> Unit,
+    onCancel: () -> Unit,
+) {
+    var showConfirmation by remember { mutableStateOf(false) }
+    Card(
+        colors = CardDefaults.cardColors(containerColor = FarmColors.Surface),
+        shape = RoundedCornerShape(16.dp),
+    ) {
+        Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                if (useTelugu) "ఇంటర్నెట్ లేకుండా వీధి మ్యాప్ చూడాలా?" else "Keep this street map for offline use?",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = FarmColors.MainText,
+            )
+            Text(
+                if (useTelugu) "ఈ పొలం చుట్టూ ఉన్న రోడ్లు, ఊరి పేర్ల మ్యాప్‌ను వైఫై ఉన్నప్పుడు దాచుకోవచ్చు. శాటిలైట్ చిత్రాలు ఆఫ్‌లైన్‌లో అందుబాటులో ఉండవు." else "Save the street map around this plot while connected. Satellite imagery remains online-only.",
+                style = MaterialTheme.typography.bodySmall,
+                color = FarmColors.SecondaryText,
+            )
+            when (state) {
+                OfflineMapDownloadState.Idle -> FarmSecondaryButton(
+                    text = if (useTelugu) "వీధి మ్యాప్ దాచండి" else "Download street map",
+                    onClick = { showConfirmation = true },
+                )
+                is OfflineMapDownloadState.Downloading -> {
+                    Text(
+                        if (useTelugu) "మ్యాప్ దాస్తున్నాం · ${state.completedTiles} టైల్స్ · ${formatMegabytes(state.downloadedBytes)} MB" else "Saving map · ${state.completedTiles} tiles · ${formatMegabytes(state.downloadedBytes)} MB",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = FarmColors.SecondaryText,
+                    )
+                    state.warning?.let { warning ->
+                        Text(
+                            if (useTelugu) "కొన్ని మ్యాప్ టైల్స్ ఆలస్యమవుతున్నాయి: $warning" else "Some map resources are retrying: $warning",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = FarmColors.Warning,
+                        )
+                    }
+                    FarmSecondaryButton(
+                        text = if (useTelugu) "ఆపు" else "Cancel download",
+                        onClick = onCancel,
+                    )
+                }
+                is OfflineMapDownloadState.Saved -> {
+                    Text(
+                        if (useTelugu) "మ్యాప్ ఫోన్‌లో దాచబడింది · ${state.completedTiles} టైల్స్ · ${formatMegabytes(state.downloadedBytes)} MB" else "Street map saved · ${state.completedTiles} tiles · ${formatMegabytes(state.downloadedBytes)} MB",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = FarmColors.Success,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        if (useTelugu) "ఈ మడికి వీధి మ్యాప్ ఆఫ్‌లైన్‌లో అందుబాటులో ఉంటుంది." else "The street map for this plot is available offline.",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = FarmColors.SecondaryText,
+                    )
+                    FarmSecondaryButton(
+                        text = if (useTelugu) "మ్యాప్‌ను నవీకరించండి" else "Update offline map",
+                        onClick = { showConfirmation = true },
+                    )
+                }
+                is OfflineMapDownloadState.LimitReached -> {
+                    NoticeCard(if (useTelugu) "ఈ ప్రాంతం మ్యాప్ పరిమితిని దాటింది. చిన్న ప్రాంతం ఎంచుకుని మళ్లీ ప్రయత్నించండి." else "This map area reached the safe download limit. Try a smaller area.")
+                    FarmSecondaryButton(
+                        text = if (useTelugu) "మళ్లీ ప్రయత్నించండి" else "Try again",
+                        onClick = { showConfirmation = true },
+                    )
+                }
+                is OfflineMapDownloadState.Failed -> {
+                    NoticeCard(if (useTelugu) "మ్యాప్ దాచలేకపోయాం: ${state.reason}" else "Could not save the map: ${state.reason}")
+                    FarmSecondaryButton(
+                        text = if (useTelugu) "మళ్లీ ప్రయత్నించండి" else "Try again",
+                        onClick = { showConfirmation = true },
+                    )
+                }
+            }
+        }
+    }
+    if (showConfirmation) {
+        AlertDialog(
+            onDismissRequest = { showConfirmation = false },
+            title = { Text(if (useTelugu) "వీధి మ్యాప్ దాచాలా?" else "Download this street map?") },
+            text = {
+                Text(
+                    if (useTelugu) "దీనికి ఇంటర్నెట్ డేటా, ఫోన్ నిల్వ అవసరం. చిన్న ప్రాంతం మాత్రమే దాచబడుతుంది. ఈ యాప్ మ్యాప్ సేవా పరిమితుల కంటే తక్కువ పరిమితిని ఉపయోగిస్తుంది. GPS కొలత మాత్రం ఇంటర్నెట్ లేకుండానే పని చేస్తుంది." else "This uses internet data and phone storage. Only the area around this plot is saved, with conservative provider limits. GPS recording and area calculation continue to work without internet.",
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showConfirmation = false; onDownload() }) {
+                    Text(if (useTelugu) "దాచండి" else "Download")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showConfirmation = false }) {
+                    Text(if (useTelugu) "వద్దు" else "Not now")
+                }
+            },
+        )
+    }
+}
+
+private fun formatMegabytes(bytes: Long): String =
+    String.format(java.util.Locale.US, "%.1f", bytes / (1024.0 * 1024.0))
 
 @Composable
 private fun MeasurementSavedContent(
@@ -677,72 +897,6 @@ private fun GpsQualityCard(state: LandMeasurementUiState, useTelugu: Boolean) {
 }
 
 @Composable
-private fun BoundaryPreview(
-    points: List<GpsLocationSample>,
-    useTelugu: Boolean,
-    closeBoundary: Boolean = false,
-) {
-    Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFEAF0E2))) {
-        Column(Modifier.fillMaxWidth().padding(10.dp)) {
-            Text(if (useTelugu) "మీరు నడిచిన హద్దు" else "Boundary you have walked", fontWeight = FontWeight.Bold, color = FarmColors.MainText)
-            Canvas(
-                Modifier
-                    .fillMaxWidth()
-                    .height(210.dp)
-                    .padding(8.dp)
-                    .semantics {
-                        contentDescription = if (useTelugu) {
-                            "నమోదైన ${points.size} GPS స్థానాల రేఖాచిత్రం"
-                        } else {
-                            "Sketch of ${points.size} recorded GPS boundary points"
-                        }
-                    },
-            ) {
-                val inset = 20.dp.toPx()
-                val width = size.width - inset * 2f
-                val height = size.height - inset * 2f
-                // A normalized sketch only. It is not a geographic map or a north-up map.
-                repeat(4) { index ->
-                    val x = inset + width * index / 3f
-                    val y = inset + height * index / 3f
-                    drawLine(Color(0xFFD5E0CC), androidx.compose.ui.geometry.Offset(x, inset), androidx.compose.ui.geometry.Offset(x, inset + height), 1.dp.toPx())
-                    drawLine(Color(0xFFD5E0CC), androidx.compose.ui.geometry.Offset(inset, y), androidx.compose.ui.geometry.Offset(inset + width, y), 1.dp.toPx())
-                }
-                if (points.isNotEmpty()) {
-                    val minLat = points.minOf { it.latitude }
-                    val maxLat = points.maxOf { it.latitude }
-                    val minLon = points.minOf { it.longitude }
-                    val maxLon = points.maxOf { it.longitude }
-                    val latSpan = max(maxLat - minLat, 0.000001)
-                    val lonSpan = max(maxLon - minLon, 0.000001)
-                    val projected = points.map { point ->
-                        androidx.compose.ui.geometry.Offset(
-                            x = inset + ((point.longitude - minLon) / lonSpan).toFloat() * width,
-                            y = inset + ((maxLat - point.latitude) / latSpan).toFloat() * height,
-                        )
-                    }
-                    val path = Path().apply {
-                        moveTo(projected.first().x, projected.first().y)
-                        projected.drop(1).forEach { lineTo(it.x, it.y) }
-                        if (closeBoundary && projected.size >= 3) close()
-                    }
-                    if (closeBoundary && projected.size >= 3) drawPath(path, Color(0x554D8750))
-                    drawPath(path, FarmColors.PrimaryForest, style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round))
-                    projected.forEachIndexed { index, point ->
-                        drawCircle(if (index == 0) FarmColors.HarvestAmber else FarmColors.PrimaryForest, radius = if (index == 0) 7.dp.toPx() else 4.dp.toPx(), center = point)
-                    }
-                }
-            }
-            Text(
-                text = if (useTelugu) "ఇది పాయింట్ల రేఖాచిత్రం మాత్రమే; మ్యాప్ కాదు." else "Sketch of recorded points only; this is not a map.",
-                style = MaterialTheme.typography.labelSmall,
-                color = FarmColors.SecondaryText,
-            )
-        }
-    }
-}
-
-@Composable
 private fun NoticeCard(text: String) {
     Card(colors = CardDefaults.cardColors(containerColor = FarmColors.WarningContainer)) {
         Text(text, modifier = Modifier.padding(12.dp), color = FarmColors.OnAmberContainer, style = MaterialTheme.typography.bodySmall)
@@ -799,3 +953,4 @@ private fun formatDate(epochMillis: Long): String =
             .withZone(ZoneId.systemDefault())
             .format(Instant.ofEpochMilli(epochMillis))
     }.getOrDefault("—")
+
