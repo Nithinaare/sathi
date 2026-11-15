@@ -31,6 +31,7 @@ import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.SmartDisplay
 import androidx.compose.material.icons.rounded.Terrain
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -92,6 +93,7 @@ fun MoreHubScreen(
     onOpenSettings: () -> Unit = {},
     onOpenTemplates: () -> Unit = {},
     onOpenLandMeasurement: () -> Unit = {},
+    onOpenVideos: () -> Unit = {},
     onBack: (() -> Unit)? = null,
 ) {
     val useTe = LocalAppLanguage.current == AppLanguage.TELUGU
@@ -162,14 +164,28 @@ fun MoreHubScreen(
                     },
                 )
             }
-            item(key = "extras_row_measurement", contentType = "action_tile") {
-                FarmVisualGridTile(
-                    title = if (useTe) "భూమి కొలత" else "Land Measurement",
-                    icon = Icons.Rounded.Terrain,
-                    borderColor = FarmColors.PrimaryForest,
-                    speakDescription = if (useTe) "GPS తో నడిచి లేదా పొడవు వెడల్పు రాసి మడి విస్తీర్ణం కొలవండి." else "Measure plot area by walking with GPS or entering dimensions.",
-                    onClick = onOpenLandMeasurement,
-                    modifier = Modifier.fillMaxWidth(),
+            item(key = "extras_row_measurement_videos", contentType = "two_col_tile_row") {
+                TwoColTileRow(
+                    first = {
+                        FarmVisualGridTile(
+                            title = if (useTe) "భూమి కొలత" else "Land Measurement",
+                            icon = Icons.Rounded.Terrain,
+                            borderColor = FarmColors.PrimaryForest,
+                            speakDescription = if (useTe) "GPS తో నడిచి లేదా పొడవు వెడల్పు రాసి మడి విస్తీర్ణం కొలవండి." else "Measure plot area by walking with GPS or entering dimensions.",
+                            onClick = onOpenLandMeasurement,
+                            modifier = Modifier.weight(1f).fillMaxHeight(),
+                        )
+                    },
+                    second = {
+                        FarmVisualGridTile(
+                            title = if (useTe) "సాగు వీడియోలు" else "Farming Videos",
+                            icon = Icons.Rounded.SmartDisplay,
+                            borderColor = FarmColors.Terracotta,
+                            speakDescription = if (useTe) "సహజ ఎరువులు, పురుగుల నివారణ మరియు వ్యవసాయ వీడియో పాఠాలు." else "Curated farming video guides and agricultural advisories.",
+                            onClick = onOpenVideos,
+                            modifier = Modifier.weight(1f).fillMaxHeight(),
+                        )
+                    },
                 )
             }
         }

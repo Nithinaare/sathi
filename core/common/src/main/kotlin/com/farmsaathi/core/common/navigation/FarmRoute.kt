@@ -173,6 +173,9 @@ sealed interface FarmRoute {
 
     @Serializable data object MoreTab : FarmRoute
 
+    // 13. Curated Agricultural Video Hub
+    @Serializable data class FarmingVideos(val initialCategoryId: String? = null) : FarmRoute
+
     @Serializable data object SettingsHome : FarmRoute
 
     @Serializable data object BackupRestore : FarmRoute

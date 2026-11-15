@@ -22,6 +22,7 @@ import com.farmsaathi.core.designsystem.localization.LocalAppLanguage
 import com.farmsaathi.core.designsystem.theme.FarmSpacing
 import com.farmsaathi.core.model.AppLanguage
 import com.farmsaathi.feature.home.screens.BackupRestoreScreen
+import com.farmsaathi.feature.home.screens.FarmingVideosScreen
 import com.farmsaathi.feature.home.screens.HomeDashboardScreen
 import com.farmsaathi.feature.home.screens.MoreHubScreen
 import com.farmsaathi.feature.home.screens.OfflineHelpScreen
@@ -110,6 +111,13 @@ private fun NavGraphBuilder.homeAndMoreDestinations(nav: NavController) {
             onOpenHelp = { nav.navigate(FarmRoute.OfflineHelp) },
             onOpenBackup = { nav.navigate(FarmRoute.BackupRestore) },
             onOpenLandMeasurement = { nav.navigate(FarmRoute.LandMeasurement()) },
+            onOpenVideos = { nav.navigate(FarmRoute.FarmingVideos()) },
+            onBack = { nav.popBackStack() },
+        )
+    }
+
+    composable<FarmRoute.FarmingVideos> {
+        FarmingVideosScreen(
             onBack = { nav.popBackStack() },
         )
     }
